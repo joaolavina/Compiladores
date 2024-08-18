@@ -1,14 +1,17 @@
 package com.pilador.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 public class ToolbarMenu extends JToolBar {
 
@@ -18,25 +21,29 @@ public class ToolbarMenu extends JToolBar {
         setPreferredSize(new Dimension(900, 70));
         setFloatable(false);
 
-        btns[0] = createButton("Novo", "Ctrl+N", "newIcon.png");
-        btns[1] = createButton("Abrir", "Ctrl+O", "openIcon.png");
-        btns[2] = createButton("Salvar", "Ctrl+S", "saveIcon.png");
-        btns[3] = createButton("Copiar", "Ctrl+C", "copyIcon.png");
-        btns[4] = createButton("Colar", "Ctrl+V", "pasteIcon.png");
-        btns[5] = createButton("Cortar", "Ctrl+X", "cutIcon.png");
-        btns[6] = createButton("Compilar", "F7", "compileIcon.png");
-        btns[7] = createButton("Equipe", "F1", "teamIcon.png");
+        // ! TROCAR ICONES, MENOR
+        btns[0] = createButton("Novo", "Ctrl+N");
+        btns[1] = createButton("Abrir", "Ctrl+O");
+        btns[2] = createButton("Salvar", "Ctrl+S");
+        btns[3] = createButton("Copiar", "Ctrl+C");
+        btns[4] = createButton("Colar", "Ctrl+V");
+        btns[5] = createButton("Cortar", "Ctrl+X");
+        btns[6] = createButton("Compilar", "F7");
+        btns[7] = createButton("Equipe", "F1");
 
         for (JButton btn : btns) {
             add(btn);
         }
     }
 
-    private JButton createButton(String text, String toolTip, String iconName) {
-        String iconPath = "compiladores/src/main/resources/images/" + iconName;
+    private JButton createButton(String text, String toolTip) {
+        String iconPath = "compiladores/src/main/resources/images/" + text + ".png";
         Icon icon = new ImageIcon(iconPath);
         JButton btn = new JButton(text + " [" + toolTip + "] ", icon);
         btn.setToolTipText(toolTip);
+
+        btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+        btn.setHorizontalTextPosition(SwingConstants.CENTER);
 
         // TESTAR COM/SEM CONDIÇÃO JComponent.WHEN_IN_FOCUSED_WINDOW
         char keyEventChar = extractKeyEvent(toolTip);
@@ -47,7 +54,7 @@ public class ToolbarMenu extends JToolBar {
         else
             keyStroke = KeyStroke.getKeyStroke(indexAscii, InputEvent.CTRL_DOWN_MASK);
 
-        // btn.getInputMap().put(keyStroke, text);
+        btn.getInputMap().put(keyStroke, text);
         // btn.getActionMap().put( );
         return btn;
     }
@@ -57,7 +64,6 @@ public class ToolbarMenu extends JToolBar {
     }
 
     private int getKeyEvent(char keyChar) {
-
         int keyEvent;
 
         switch (keyChar) {
@@ -93,6 +99,38 @@ public class ToolbarMenu extends JToolBar {
         return keyEvent;
     }
 
+    public JButton getNewBtn(){
+        return btns[0];
+    }
+
+    public JButton geOpenBtn(){
+        return btns[1];
+    }
+
+    public JButton getSaveBtn(){
+        return btns[2];
+    }
+
+    public JButton getCopyBtn(){
+        return btns[3];
+    }
+
+    public JButton getPasteBtn(){
+        return btns[4];
+    }
+
+    public JButton getCutBtn(){
+        return btns[5];
+    }
+
+    public JButton getCompileBtn(){
+        return btns[6];
+    }
+
+    public JButton getTeamBtn(){
+        return btns[7];
+    }
+    
     // butExcluir.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_X,
     // InputEvent.CTRL_DOWN_MASK), “evento”);
 
@@ -108,17 +146,6 @@ public class ToolbarMenu extends JToolBar {
     // }
 
     // private JToolBar createToolBar() {
-
-    // // Botões para mexer nos arquivos
-    // JButton newButton = createToolBarButton("Novo", "Ctrl+N", "new.png", e ->
-    // newFile());
-    // JButton openButton = createToolBarButton("Abrir", "Ctrl+O", "open.png", e ->
-    // openFile());
-    // JButton saveButton = createToolBarButton("Salvar", "Ctrl+S", "save.png", e ->
-    // saveFile());
-    // toolBar.add(newButton);
-    // toolBar.add(openButton);
-    // toolBar.add(saveButton);
 
     // // Atalhos de texto
     // JButton copyButton = createToolBarButton("Copiar", "Ctrl+C", "copy.png", e ->
