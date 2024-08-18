@@ -1,5 +1,7 @@
 package com.pilador.view;
 
-public class MessageArea {
+import javax.swing.JTextArea;
+
+public class MessageArea extends JTextArea {
 
 }

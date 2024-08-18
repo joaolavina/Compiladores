@@ -1,5 +1,7 @@
 package com.pilador.view;
 
-public class EditorArea {
+import javax.swing.JTextArea;
+
+public class EditorArea extends JTextArea{
 
 }
