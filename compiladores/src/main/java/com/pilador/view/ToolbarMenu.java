@@ -19,21 +19,17 @@ public class ToolbarMenu extends JToolBar {
         setFloatable(false);
 
         btns[0] = createButton("Novo", "Ctrl+N", "newIcon.png");
-        add(btns[0]);
         btns[1] = createButton("Abrir", "Ctrl+O", "openIcon.png");
-        add(btns[1]);
         btns[2] = createButton("Salvar", "Ctrl+S", "saveIcon.png");
-        add(btns[2]);
         btns[3] = createButton("Copiar", "Ctrl+C", "copyIcon.png");
-        add(btns[3]);
         btns[4] = createButton("Colar", "Ctrl+V", "pasteIcon.png");
-        add(btns[4]);
         btns[5] = createButton("Cortar", "Ctrl+X", "cutIcon.png");
-        add(btns[5]);
         btns[6] = createButton("Compilar", "F7", "compileIcon.png");
-        add(btns[6]);
         btns[7] = createButton("Equipe", "F1", "teamIcon.png");
-        add(btns[7]);
+
+        for (JButton btn : btns) {
+            add(btn);
+        }
     }
 
     private JButton createButton(String text, String toolTip, String iconName) {
