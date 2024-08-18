@@ -1,7 +1,36 @@
 package com.pilador.view;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class MessageArea extends JTextArea {
+public class MessageArea extends JPanel {
+
+    private JScrollPane scrollPane;
+    private JTextArea messageArea;
+
+    public JTextArea getMessageArea() {
+        return messageArea;
+    }
+
+    public void setMessageArea(JTextArea messageArea) {
+        this.messageArea = messageArea;
+    }
+
+    public MessageArea() {
+        messageArea = new JTextArea();
+        messageArea.setEditable(false);
+        messageArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+
+        scrollPane = new JScrollPane(messageArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
+    }
 
 }

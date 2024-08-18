@@ -23,7 +23,7 @@ public class NumberedBorder extends AbstractBorder {
 	private final Color myColor;
 
 	public NumberedBorder() {
-		myColor = new Color(164, 164, 164);
+		myColor = new Color(112, 73, 166);
 	}
 
 	@Override
@@ -76,9 +76,3 @@ public class NumberedBorder extends AbstractBorder {
 		return characterHeight * lenght;
 	}
 }
-
-
-/* como usar com um JTextArea:
-JTextArea  = new JTextArea();
-txt.setBorder(new NumberedBorder());
-*/
