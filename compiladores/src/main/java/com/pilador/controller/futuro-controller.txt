@@ -1,0 +1,1 @@
+Aqui estarão os arquivos contendo a interação entre model e view.

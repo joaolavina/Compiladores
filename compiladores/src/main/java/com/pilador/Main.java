@@ -1,16 +1,18 @@
+package com.pilador;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-public class gui extends JFrame {
+public class Main extends JFrame {
 
     private JTextArea editorArea;
     private JTextArea messageArea;
     private JLabel statusBar;
     private JFileChooser fileChooser;
 
-    public gui() {
+    public Main() {
         setTitle("Compilador");
         setSize(910, 600);
         setMinimumSize(new Dimension(910, 600));
@@ -136,11 +138,8 @@ public class gui extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            gui gui = new gui();
+            Main gui = new Main();
             gui.setVisible(true);
         });
     }
 }
-
-
-//issoéumtestefoda
