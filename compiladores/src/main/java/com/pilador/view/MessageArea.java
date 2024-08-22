@@ -12,12 +12,17 @@ public class MessageArea extends JPanel {
     private JScrollPane scrollPane;
     private JTextArea messageArea;
 
-    public JTextArea getMessageArea() {
-        return messageArea;
+    public String getMessageAreaText() {
+        return messageArea.getText();
     }
 
-    public void setMessageArea(JTextArea messageArea) {
-        this.messageArea = messageArea;
+    public void setMessageAreaText(String text) {
+        this.cleanMessageArea();
+        messageArea.insert(text, 0);
+    }
+
+    public void cleanMessageArea(){
+        messageArea.replaceRange("", 0, this.getMessageAreaText().length());
     }
 
     public MessageArea() {

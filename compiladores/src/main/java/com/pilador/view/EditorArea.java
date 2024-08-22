@@ -25,7 +25,16 @@ public class EditorArea extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public JTextArea getTextArea() {
-        return textArea;
+    public String getEditorAreaText() {
+        return textArea.getText();
+    }
+
+    public void setEditorAreaText(String text) {
+        this.cleanEditorArea();
+        textArea.insert(text, 0);
+    }
+
+    public void cleanEditorArea(){
+        textArea.replaceRange("", 0, this.getEditorAreaText().length());
     }
 }

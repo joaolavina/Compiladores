@@ -1,23 +1,28 @@
 package com.pilador.view;
 
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BoxLayout;
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
+import com.pilador.controller.KeyEventController;
+
 public class ToolbarMenu extends JToolBar {
 
     private JButton[] btns = new JButton[8];
+    private KeyEventController controller;
 
-    public ToolbarMenu() {
+    public ToolbarMenu( KeyEventController controller) {
+        this.controller = controller;
         setPreferredSize(new Dimension(900, 70));
         setFloatable(false);
 
@@ -45,7 +50,7 @@ public class ToolbarMenu extends JToolBar {
         btn.setVerticalTextPosition(SwingConstants.BOTTOM);
         btn.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        // TESTAR COM/SEM CONDIÇÃO JComponent.WHEN_IN_FOCUSED_WINDOW
+        // TESTAR COM/SEM CONDIÃ‡ÃƒO JComponent.WHEN_IN_FOCUSED_WINDOW
         char keyEventChar = extractKeyEvent(toolTip);
         int indexAscii = getKeyEvent(keyEventChar);
         KeyStroke keyStroke;
@@ -54,8 +59,11 @@ public class ToolbarMenu extends JToolBar {
         else
             keyStroke = KeyStroke.getKeyStroke(indexAscii, InputEvent.CTRL_DOWN_MASK);
 
-        btn.getInputMap().put(keyStroke, text);
-        // btn.getActionMap().put( );
+        btn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, text);
+        btn.getActionMap().put(text, getAction(text));
+        
+        btn.addActionListener(e -> getAction(text).actionPerformed(e));
+
         return btn;
     }
 
@@ -130,9 +138,43 @@ public class ToolbarMenu extends JToolBar {
     public JButton getTeamBtn(){
         return btns[7];
     }
+
+    private AbstractAction getAction(String text) {
+        return new AbstractAction (text) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (text) {
+                    case "Novo":
+                        System.out.println("Novo");
+                        break;
+                    case "Abrir":
+                        System.out.println("Abrir");
+                        break;
+                    case "Salvar":
+                        System.out.println("Salvar");
+                        break;
+                    case "Copiar":
+                        System.out.println("Copiar");
+                        break;
+                    case "Colar":
+                        System.out.println("Colar");
+                        break;
+                    case "Cortar":
+                        System.out.println("Cortar");
+                        break;
+                    case "Compilar":
+                        controller.compileProgram();
+                        break;
+                    case "Equipe":
+                        controller.showTeamInfo();
+                        break;
+                }
+            }
+        };
+    }
     
     // butExcluir.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_X,
-    // InputEvent.CTRL_DOWN_MASK), “evento”);
+    // InputEvent.CTRL_DOWN_MASK), â€œeventoâ€);
 
     // private JButton createToolBarButton(String text, String toolTip, String
     // iconPath, ActionListener action) {
@@ -141,7 +183,7 @@ public class ToolbarMenu extends JToolBar {
     // button.setMnemonic(KeyEvent.getExtendedKeyCodeForChar(toolTip.charAt(toolTip.length()
     // - 1)));
     // button.addActionListener(action);
-    // // Configurar o ícone aqui, se necessário
+    // // Configurar o Ã­cone aqui, se necessÃ¡rio
     // return button;
     // }
 
@@ -158,7 +200,7 @@ public class ToolbarMenu extends JToolBar {
     // toolBar.add(pasteButton);
     // toolBar.add(cutButton);
 
-    // // Botões de compilar
+    // // BotÃµes de compilar
     // JButton compileButton = createToolBarButton("Compilar", "F7", "compile.png",
     // e -> compileProgram());
     // JButton teamButton = createToolBarButton("Equipe", "F1", "team.png", e ->
@@ -167,13 +209,6 @@ public class ToolbarMenu extends JToolBar {
     // toolBar.add(teamButton);
 
     // return toolBar;
-    // }
-
-    // private void compileProgram() {
-    // messageArea.setText("Compilação de programas ainda não foi implementada.");
-    // }
-
-    // private void showTeamInfo() {
-    // messageArea.setText("Equipe: Nome1, Nome2, Nome3");
+    // 
     // }
 }
