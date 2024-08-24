@@ -2,15 +2,18 @@ package com.pilador.controller;
 
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
+import com.pilador.view.StatusBar;
 
 public class KeyEventController {
 
     private MessageArea resultArea;
     private EditorArea editorArea;
+    private StatusBar statusBar;
 
-    public KeyEventController(MessageArea resultArea, EditorArea editorArea) {
+    public KeyEventController(MessageArea resultArea, EditorArea editorArea, StatusBar statusBar) {
         this.resultArea = resultArea;
         this.editorArea = editorArea;
+        this.statusBar = statusBar;
     }
 
     public void compileProgram() {
@@ -24,6 +27,5 @@ public class KeyEventController {
     public void newFile() {
         this.editorArea.cleanEditorArea();
         this.resultArea.cleanMessageArea();
-
     }
 }

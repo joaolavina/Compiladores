@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
         add(editorArea, BorderLayout.CENTER);
 
         // Barra de ferramentas
-        KeyEventController controller = new KeyEventController(messageArea, editorArea);
+        KeyEventController controller = new KeyEventController(messageArea, editorArea, statusBar);
         toolbar = new ToolbarMenu(controller);
         add(toolbar, BorderLayout.NORTH);
 

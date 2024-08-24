@@ -61,9 +61,11 @@ public class ToolbarMenu extends JToolBar {
 
         btn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, text);
         
-        btn.getActionMap().put(text, getAction(text));
+        AbstractAction action = getAction(text);
+
+        btn.getActionMap().put(text, action);
         
-        btn.addActionListener(e -> getAction(text).actionPerformed(e));
+        btn.addActionListener(e -> action.actionPerformed(e));
 
         return btn;
     }
@@ -114,7 +116,7 @@ public class ToolbarMenu extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 switch (text) {
                     case "Novo":
-                        System.out.println("Novo");
+                        controller.newFile();
                         break;
                     case "Abrir":
                         System.out.println("Abrir");
@@ -173,4 +175,4 @@ public class ToolbarMenu extends JToolBar {
     public JButton getTeamBtn(){
         return btns[7];
     }
-}
+} 
