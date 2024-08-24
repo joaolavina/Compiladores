@@ -21,7 +21,7 @@ public class ToolbarMenu extends JToolBar {
     private JButton[] btns = new JButton[8];
     private KeyEventController controller;
 
-    public ToolbarMenu( KeyEventController controller) {
+    public ToolbarMenu(KeyEventController controller) {
         this.controller = controller;
         setPreferredSize(new Dimension(900, 70));
         setFloatable(false);
@@ -60,11 +60,11 @@ public class ToolbarMenu extends JToolBar {
             keyStroke = KeyStroke.getKeyStroke(indexAscii, InputEvent.CTRL_DOWN_MASK);
 
         btn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, text);
-        
+
         AbstractAction action = getAction(text);
 
         btn.getActionMap().put(text, action);
-        
+
         btn.addActionListener(e -> action.actionPerformed(e));
 
         return btn;
@@ -111,7 +111,7 @@ public class ToolbarMenu extends JToolBar {
     }
 
     private AbstractAction getAction(String text) {
-        return new AbstractAction (text) {
+        return new AbstractAction(text) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (text) {
@@ -125,13 +125,13 @@ public class ToolbarMenu extends JToolBar {
                         System.out.println("Salvar");
                         break;
                     case "Copiar":
-                        System.out.println("Copiar");
+                        controller.copy();
                         break;
                     case "Colar":
-                        System.out.println("Colar");
+                        controller.paste();
                         break;
                     case "Cortar":
-                        System.out.println("Cortar");
+                        controller.cut();
                         break;
                     case "Compilar":
                         controller.compileProgram();
@@ -143,36 +143,36 @@ public class ToolbarMenu extends JToolBar {
             }
         };
     }
-    
-    public JButton getNewBtn(){
+
+    public JButton getNewBtn() {
         return btns[0];
     }
 
-    public JButton geOpenBtn(){
+    public JButton geOpenBtn() {
         return btns[1];
     }
 
-    public JButton getSaveBtn(){
+    public JButton getSaveBtn() {
         return btns[2];
     }
 
-    public JButton getCopyBtn(){
+    public JButton getCopyBtn() {
         return btns[3];
     }
 
-    public JButton getPasteBtn(){
+    public JButton getPasteBtn() {
         return btns[4];
     }
 
-    public JButton getCutBtn(){
+    public JButton getCutBtn() {
         return btns[5];
     }
 
-    public JButton getCompileBtn(){
+    public JButton getCompileBtn() {
         return btns[6];
     }
 
-    public JButton getTeamBtn(){
+    public JButton getTeamBtn() {
         return btns[7];
     }
-} 
+}

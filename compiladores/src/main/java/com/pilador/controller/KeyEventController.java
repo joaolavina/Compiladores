@@ -28,4 +28,16 @@ public class KeyEventController {
         this.editorArea.cleanEditorArea();
         this.resultArea.cleanMessageArea();
     }
+
+    public void copy() {
+        editorArea.getTextArea().copy();
+    }
+
+    public void paste() {
+        editorArea.getTextArea().paste();
+    }
+
+    public void cut() {
+        editorArea.getTextArea().cut();
+    }
 }
