@@ -1,6 +1,13 @@
 package com.pilador.controller;
 
-import com.pilador.model.FileHandler;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -10,11 +17,17 @@ public class KeyEventController {
     private MessageArea resultArea;
     private EditorArea editorArea;
     private StatusBar statusBar;
+    private JFileChooser fileChooser;
 
     public KeyEventController(MessageArea resultArea, EditorArea editorArea, StatusBar statusBar) {
         this.resultArea = resultArea;
         this.editorArea = editorArea;
         this.statusBar = statusBar;
+
+        fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
     }
 
     public void compileProgram() {
@@ -31,11 +44,56 @@ public class KeyEventController {
         statusBar.cleanStatusBar();
     }
 
-    public void saveFile(){}
+    public void saveFile() {
+        String path = statusBar.getText();
+        File file = null;
 
-    // public void openFile(JFileChooser filechooser){
-    //     filechooser.showOpenDialog(null);
-    // }
+        
+
+
+        if (statusBar.getText().isEmpty()) {
+            if(fileChooser.showOpenDialog(null) == 0)
+                path = fileChooser.getSelectedFile() + ".txt";
+            else
+                return;
+        } 
+        
+        file = new File(path);
+        writeFile(file);
+    }
+
+    private void writeFile(File file) {
+
+        try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
+            String text = editorArea.getEditorAreaText();
+            writer.print(text);
+        } catch (IOException e) {
+        }
+
+        // ! VER COM A JOYCE
+        // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
+        // file.getName());
+        statusBar.setStatusBarText(" " + file.getAbsolutePath());
+    }
+
+    public void openFile() {
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            editorArea.cleanEditorArea();
+            statusBar.cleanStatusBar();
+            try (Scanner scanner = new Scanner(file, "UTF-8")) {
+                while (scanner.hasNextLine()) {
+                    String linha = scanner.nextLine();
+                    editorArea.getTextArea().append(linha + "\n");
+                }
+                // ! VER COM A JOYCE
+                // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
+                // file.getName());
+                statusBar.setStatusBarText(" " + file.getAbsolutePath());
+            } catch (IOException e) {
+            }
+        }
+    }
 
     public void copy() {
         editorArea.getTextArea().copy();

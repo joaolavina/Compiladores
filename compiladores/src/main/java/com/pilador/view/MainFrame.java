@@ -32,6 +32,10 @@ public class MainFrame extends JFrame {
         editorArea = new EditorArea();
         add(editorArea, BorderLayout.CENTER);
 
+        // Barra de status
+        statusBar = new StatusBar();
+        add(statusBar, BorderLayout.SOUTH);
+
         // Barra de ferramentas
         KeyEventController controller = new KeyEventController(messageArea, editorArea, statusBar);
         toolbar = new ToolbarMenu(controller);
@@ -40,10 +44,6 @@ public class MainFrame extends JFrame {
         // Divisor editor/mensagem
         divider = new DividerPane(editorArea, messageArea);
         add(divider, BorderLayout.CENTER);
-
-        // Barra de status
-        statusBar = new StatusBar();
-        add(statusBar, BorderLayout.SOUTH);
     }
 
     public ToolbarMenu getToolbar() {
