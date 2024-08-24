@@ -1,5 +1,6 @@
 package com.pilador.controller;
 
+import com.pilador.model.FileHandler;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -17,17 +18,24 @@ public class KeyEventController {
     }
 
     public void compileProgram() {
-        this.resultArea.setMessageAreaText("Compilação de programas ainda não foi implementada.");
+        resultArea.setMessageAreaText("Compilação de programas ainda não foi implementada.");
     }
 
     public void showTeamInfo() {
-        this.resultArea.setMessageAreaText("Equipe: Cristina, Daniel e João Gabriel.");
+        resultArea.setMessageAreaText("Equipe: Cristina, Daniel e João Gabriel.");
     }
 
     public void newFile() {
-        this.editorArea.cleanEditorArea();
-        this.resultArea.cleanMessageArea();
+        editorArea.cleanEditorArea();
+        resultArea.cleanMessageArea();
+        statusBar.cleanStatusBar();
     }
+
+    public void saveFile(){}
+
+    // public void openFile(JFileChooser filechooser){
+    //     filechooser.showOpenDialog(null);
+    // }
 
     public void copy() {
         editorArea.getTextArea().copy();

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -13,6 +14,8 @@ import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.JFileChooser;
 
 import com.pilador.controller.KeyEventController;
 
@@ -20,6 +23,7 @@ public class ToolbarMenu extends JToolBar {
 
     private JButton[] btns = new JButton[8];
     private KeyEventController controller;
+    private JFileChooser filechooser;
 
     public ToolbarMenu(KeyEventController controller) {
         this.controller = controller;
@@ -39,6 +43,8 @@ public class ToolbarMenu extends JToolBar {
         for (JButton btn : btns) {
             add(btn);
         }
+
+        filechooser = new JFileChooser();
     }
 
     private JButton createButton(String text, String toolTip) {
@@ -118,8 +124,36 @@ public class ToolbarMenu extends JToolBar {
                     case "Novo":
                         controller.newFile();
                         break;
-                    case "Abrir":
-                        System.out.println("Abrir");
+                    case "Abrir": 
+                        //controller.openFile(filechooser);
+                        filechooser.showOpenDialog(null);
+                        FileFilter fileFilter = new FileFilter() {
+                            @Override
+                            public boolean accept(File f) {
+                                String ext = null;
+                                String s = f.getName();
+                            
+                                int i = s.lastIndexOf('.');
+                        
+                                if (i > 0 &&  i < s.length() - 1) {
+                                    ext = s.substring(i+1).toLowerCase();
+                                }
+   
+                                if (f.isDirectory() || ext.equals("txt")) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+
+                            @Override
+                            public String getDescription() {
+                                // TODO Auto-generated method stub
+                                throw new UnsupportedOperationException("Unimplemented method 'getDescription'");
+                            }
+                        };
+                        filechooser.addChoosableFileFilter(fileFilter);
+                        System.out.println(filechooser.getSelectedFile().getName());
                         break;
                     case "Salvar":
                         System.out.println("Salvar");
