@@ -46,19 +46,14 @@ public class KeyEventController {
 
     public void saveFile() {
         String path = statusBar.getText();
-        File file = null;
 
+        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            path = fileChooser.getSelectedFile().getAbsolutePath();        
+        }
         
 
-
-        if (statusBar.getText().isEmpty()) {
-            if(fileChooser.showOpenDialog(null) == 0)
-                path = fileChooser.getSelectedFile() + ".txt";
-            else
-                return;
-        } 
-        
-        file = new File(path);
+        System.out.println(path);
+        File file = new File(path);
         writeFile(file);
     }
 
@@ -68,12 +63,13 @@ public class KeyEventController {
             String text = editorArea.getEditorAreaText();
             writer.print(text);
         } catch (IOException e) {
+            System.out.println("Não escreveu: " + e.getMessage());
         }
 
         // ! VER COM A JOYCE
         // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
         // file.getName());
-        statusBar.setStatusBarText(" " + file.getAbsolutePath());
+        statusBar.setStatusBarText(file.getAbsolutePath());
     }
 
     public void openFile() {
@@ -89,8 +85,9 @@ public class KeyEventController {
                 // ! VER COM A JOYCE
                 // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
                 // file.getName());
-                statusBar.setStatusBarText(" " + file.getAbsolutePath());
+                statusBar.setStatusBarText(file.getAbsolutePath());
             } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
