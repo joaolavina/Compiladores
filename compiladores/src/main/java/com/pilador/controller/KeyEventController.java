@@ -47,23 +47,20 @@ public class KeyEventController {
     public void saveFile() {
         String path = statusBar.getText();
 
-        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && fileChooser.getSelectedFile().getName().endsWith(".txt")){
             path = fileChooser.getSelectedFile().getAbsolutePath();        
         }
-        
-
-        System.out.println(path);
+    
         File file = new File(path);
         writeFile(file);
     }
 
     private void writeFile(File file) {
-
         try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
             String text = editorArea.getEditorAreaText();
             writer.print(text);
         } catch (IOException e) {
-            System.out.println("Não escreveu: " + e.getMessage());
+            resultArea.setMessageAreaText("Erro ao escrever arquivo: " + e.getMessage());
         }
 
         // ! VER COM A JOYCE
@@ -73,11 +70,12 @@ public class KeyEventController {
     }
 
     public void openFile() {
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && fileChooser.getSelectedFile().getName().endsWith(".txt")) {
             File file = fileChooser.getSelectedFile();
-            editorArea.cleanEditorArea();
-            statusBar.cleanStatusBar();
+
             try (Scanner scanner = new Scanner(file, "UTF-8")) {
+                editorArea.cleanEditorArea();
+
                 while (scanner.hasNextLine()) {
                     String linha = scanner.nextLine();
                     editorArea.getTextArea().append(linha + "\n");
@@ -87,8 +85,10 @@ public class KeyEventController {
                 // file.getName());
                 statusBar.setStatusBarText(file.getAbsolutePath());
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                resultArea.setMessageAreaText("Erro ao abrir arquivo:" + e.getMessage());
             }
+
+            resultArea.cleanMessageArea();
         }
     }
 
@@ -103,4 +103,5 @@ public class KeyEventController {
     public void cut() {
         editorArea.getTextArea().cut();
     }
+
 }
