@@ -47,48 +47,56 @@ public class KeyEventController {
     public void saveFile() {
         String path = statusBar.getText();
 
-        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && fileChooser.getSelectedFile().getName().endsWith(".txt")){
+        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
             path = fileChooser.getSelectedFile().getAbsolutePath();        
         }
-    
-        File file = new File(path);
-        writeFile(file);
+
+        try {
+            File file = new File(path);
+
+            if (file.getName().isEmpty() || !(file.getName().endsWith(".txt"))){
+                throw new IllegalArgumentException();
+            }
+
+            writeFile(file);
+        } catch (IllegalArgumentException e) {
+            resultArea.setMessageAreaText("Extensão de arquivo inválida.");
+        } 
     }
 
     private void writeFile(File file) {
         try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
             String text = editorArea.getEditorAreaText();
             writer.print(text);
+
         } catch (IOException e) {
-            resultArea.setMessageAreaText("Erro ao escrever arquivo: " + e.getMessage());
+            resultArea.setMessageAreaText("Erro ao salvar arquivo: " + e.getMessage());
         }
 
-        // ! VER COM A JOYCE
-        // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
-        // file.getName());
         statusBar.setStatusBarText(file.getAbsolutePath());
     }
 
     public void openFile() {
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && fileChooser.getSelectedFile().getName().endsWith(".txt")) {
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
             try (Scanner scanner = new Scanner(file, "UTF-8")) {
+
+                if (!(file.getName().endsWith(".txt"))){
+                    throw new IllegalArgumentException();
+                }
                 editorArea.cleanEditorArea();
 
                 while (scanner.hasNextLine()) {
                     String linha = scanner.nextLine();
                     editorArea.getTextArea().append(linha + "\n");
                 }
-                // ! VER COM A JOYCE
-                // statusBar.setStatusBarText(" " + file.getParentFile().getName() + "/" +
-                // file.getName());
-                statusBar.setStatusBarText(file.getAbsolutePath());
-            } catch (IOException e) {
-                resultArea.setMessageAreaText("Erro ao abrir arquivo:" + e.getMessage());
-            }
 
-            resultArea.cleanMessageArea();
+                statusBar.setStatusBarText(file.getAbsolutePath());
+                resultArea.cleanMessageArea();
+            } catch (IOException e) {
+                resultArea.setMessageAreaText("Erro ao abrir arquivo: " + e.getMessage());
+            } 
         }
     }
 
@@ -103,5 +111,4 @@ public class KeyEventController {
     public void cut() {
         editorArea.getTextArea().cut();
     }
-
 }
