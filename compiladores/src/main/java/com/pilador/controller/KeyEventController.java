@@ -3,11 +3,16 @@ package com.pilador.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.pilador.model.LexicalError;
+import com.pilador.model.Lexico;
+import com.pilador.model.Token;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -31,7 +36,33 @@ public class KeyEventController {
     }
 
     public void compileProgram() {
-        resultArea.setMessageAreaText("Compilação de programas ainda não foi implementada.");
+
+        Lexico lexico = new Lexico();
+        lexico.setInput(new StringReader(editorArea.getEditorAreaText()));
+
+        String message = "";
+
+        try {
+            Token t = null;
+            ArrayList<Token> tokens = new ArrayList<>();
+
+            while ((t = lexico.nextToken()) != null ) {
+                tokens.add(t);   
+            }
+
+            message+= "LEXEMA | POSIÇÃO\n";
+
+            for (int i=0; i<tokens.size(); i++) {
+                Token tkn = tokens.get(i);
+                message += (tkn.getLexeme() + " | " + String.valueOf(tkn.getPosition()) + "\n"); 
+            }
+
+        } catch ( LexicalError e ) {
+            message = e.getMessage() + " em " + e.getPosition();
+        } finally {
+            resultArea.setMessageAreaText(message);
+        }
+
     }
 
     public void showTeamInfo() {

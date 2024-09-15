@@ -2,18 +2,18 @@ package com.pilador.model;
 
 import java.io.StringReader;
 
-public class Main {
+public class Main2 {
 
   public static void main(String[] args) {
     
    Lexico lexico = new Lexico();
-   lexico.setInput(new StringReader(">@\nAAAAA\n@<\nelif elif 102"));
+   lexico.setInput(new StringReader(">@\nAAAAA\n@<\n          elif elif 102"));
 
    try {
    Token t = null;
    while ( (t = lexico.nextToken()) != null ) {
-     System.out.println(t.getLexeme() + "|" + t.getPosition()); 
-     System.out.println(t.getPosition());
+     System.out.println(t.getLexeme() + " | " + t.getPosition()); 
+
      
      // só escreve o lexema, necessário escrever t.getId, t.getPosition()
     
