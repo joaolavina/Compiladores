@@ -12,7 +12,8 @@ public class Main {
    try {
    Token t = null;
    while ( (t = lexico.nextToken()) != null ) {
-     System.out.println(t.getLexeme()); 
+     System.out.println(t.getLexeme() + "|" + t.getPosition()); 
+     System.out.println(t.getPosition());
      
      // só escreve o lexema, necessário escrever t.getId, t.getPosition()
     

@@ -1,5 +1,6 @@
 package com.pilador.model;
 
+import java.util.HashMap;
 public interface Constants extends ScannerConstants
 {
     int EPSILON  = 0;
@@ -39,4 +40,43 @@ public interface Constants extends ScannerConstants
     int t_TOKEN_33 = 33; //"("
     int t_TOKEN_34 = 34; //")"
 
+
+    HashMap<Integer, String> id_string = new HashMap<>() {{
+        put(EPSILON, "ε");
+        put(DOLLAR, "$");
+        put(t_pr, "pr");
+        put(t_id, "id");    
+        put(t_int, "int");  
+        put(t_float,  "float");
+        put(t_string, "string");
+        put(t_main, "main");
+        put(t_end, "end");
+        put(t_if, "if");
+        put(t_elif, "elif");
+        put(t_else, "else");
+        put(t_false, "false");
+        put(t_true, "true");
+        put(t_read, "read");
+        put(t_write, "write");
+        put(t_writeln, "writeln");
+        put(t_repeat, "repeat");
+        put(t_until, "until");
+        put(t_while, "while");
+        put(t_TOKEN_20, "&&");
+        put(t_TOKEN_21, "||");
+        put(t_TOKEN_22, "==");
+        put(t_TOKEN_23, "!=");
+        put(t_TOKEN_24, ">");
+        put(t_TOKEN_25, "<");
+        put(t_TOKEN_26, "+");
+        put(t_TOKEN_27, "-");
+        put(t_TOKEN_28, "*");
+        put(t_TOKEN_29, "/");
+        put(t_TOKEN_30, ",");
+        put(t_TOKEN_31, ";");
+        put(t_TOKEN_32, "=");
+        put(t_TOKEN_33, "(");
+        put(t_TOKEN_34, ")");
+    }};
+    
 }
