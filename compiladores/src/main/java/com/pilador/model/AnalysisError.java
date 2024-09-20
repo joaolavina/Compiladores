@@ -1,5 +1,4 @@
 package com.pilador.model;
-
 public class AnalysisError extends Exception
 {
     private int position;

@@ -38,7 +38,7 @@ public class KeyEventController {
     public void compileProgram() {
 
         Lexico lexico = new Lexico();
-        lexico.setInput(new StringReader(editorArea.getEditorAreaText()));
+        lexico.setInput(editorArea.getEditorAreaText());
 
         String message = "";
 

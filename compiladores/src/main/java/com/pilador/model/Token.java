@@ -1,5 +1,4 @@
 package com.pilador.model;
-
 public class Token
 {
     private int id;

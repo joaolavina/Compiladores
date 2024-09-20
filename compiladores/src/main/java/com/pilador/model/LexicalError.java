@@ -1,5 +1,4 @@
 package com.pilador.model;
-
 public class LexicalError extends AnalysisError
 {
     public LexicalError(String msg, int position)

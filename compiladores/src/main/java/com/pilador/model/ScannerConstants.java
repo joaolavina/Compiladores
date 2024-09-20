@@ -1,5 +1,6 @@
 package com.pilador.model;
 
+
 public interface ScannerConstants
 {
     int[] SCANNER_TABLE_INDEXES = 
@@ -1048,10 +1049,10 @@ public interface ScannerConstants
         {60, 38}
     };
 
-    int[] TOKEN_STATE = {-2,  0, -1, -1, -1, 33, 34, 28, 26, 30, 27, 29,  4,  4, 31, 25, 32, 24,  2,  2, -1, 23,  6, -1, 20, -1, 22, -2, -2, 21,  5, -2,  3,  3, -1, -2,  3, -2,  0 };
+    int[] TOKEN_STATE = {-2,  0, 22, -1, -1, 34, 35, 29, 27, 31, 28, 30,  4,  4, 32, 26, 33, 25,  2,  2, -1, 24,  6, -1, 20, -1, 23, -2, -2, 21,  5, -2,  3,  3, -1, -2,  3, -2,  0 };
 
     int[] SPECIAL_CASES_INDEXES =
-        { 0, 0, 0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13 };
+        { 0, 0, 0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13 };
 
     String[] SPECIAL_CASES_KEYS =
         {  "elif", "else", "end", "false", "if", "main", "read", "repeat", "true", "until", "while", "write", "writeln" };
@@ -1063,7 +1064,7 @@ public interface ScannerConstants
     {
         "Caractere não esperado",
         "",
-        "Erro identificando \"!=\"",
+        "",
         "Erro identificando string",
         "Erro identificando \"&&\"",
         "",

@@ -1,6 +1,8 @@
+
 package com.pilador.model;
 
 import java.util.HashMap;
+
 public interface Constants extends ScannerConstants
 {
     int EPSILON  = 0;
@@ -26,20 +28,20 @@ public interface Constants extends ScannerConstants
     int t_while = 19;
     int t_TOKEN_20 = 20; //"&&"
     int t_TOKEN_21 = 21; //"||"
-    int t_TOKEN_22 = 22; //"=="
-    int t_TOKEN_23 = 23; //"!="
-    int t_TOKEN_24 = 24; //">"
-    int t_TOKEN_25 = 25; //"<"
-    int t_TOKEN_26 = 26; //"+"
-    int t_TOKEN_27 = 27; //"-"
-    int t_TOKEN_28 = 28; //"*"
-    int t_TOKEN_29 = 29; //"/"
-    int t_TOKEN_30 = 30; //","
-    int t_TOKEN_31 = 31; //";"
-    int t_TOKEN_32 = 32; //"="
-    int t_TOKEN_33 = 33; //"("
-    int t_TOKEN_34 = 34; //")"
-
+    int t_TOKEN_22 = 22; //"!"
+    int t_TOKEN_23 = 23; //"=="
+    int t_TOKEN_24 = 24; //"!="
+    int t_TOKEN_25 = 25; //">"
+    int t_TOKEN_26 = 26; //"<"
+    int t_TOKEN_27 = 27; //"+"
+    int t_TOKEN_28 = 28; //"-"
+    int t_TOKEN_29 = 29; //"*"
+    int t_TOKEN_30 = 30; //"/"
+    int t_TOKEN_31 = 31; //","
+    int t_TOKEN_32 = 32; //";"
+    int t_TOKEN_33 = 33; //"="
+    int t_TOKEN_34 = 34; //"("
+    int t_TOKEN_35 = 35; //")"
 
     HashMap<Integer, String> id_string = new HashMap<>() {{
         put(EPSILON, "ε");
@@ -64,19 +66,20 @@ public interface Constants extends ScannerConstants
         put(t_while, "while");
         put(t_TOKEN_20, "&&");
         put(t_TOKEN_21, "||");
-        put(t_TOKEN_22, "==");
-        put(t_TOKEN_23, "!=");
-        put(t_TOKEN_24, ">");
-        put(t_TOKEN_25, "<");
-        put(t_TOKEN_26, "+");
-        put(t_TOKEN_27, "-");
-        put(t_TOKEN_28, "*");
-        put(t_TOKEN_29, "/");
-        put(t_TOKEN_30, ",");
-        put(t_TOKEN_31, ";");
-        put(t_TOKEN_32, "=");
-        put(t_TOKEN_33, "(");
-        put(t_TOKEN_34, ")");
+        put(t_TOKEN_22, "!");
+        put(t_TOKEN_23, "==");
+        put(t_TOKEN_24, "!=");
+        put(t_TOKEN_25, ">");
+        put(t_TOKEN_26, "<");
+        put(t_TOKEN_27, "+");
+        put(t_TOKEN_28, "-");
+        put(t_TOKEN_29, "*");
+        put(t_TOKEN_30, "/");
+        put(t_TOKEN_31, ",");
+        put(t_TOKEN_32, ";");
+        put(t_TOKEN_33, "=");
+        put(t_TOKEN_34, "(");
+        put(t_TOKEN_35, ")");
     }};
-    
+
 }
