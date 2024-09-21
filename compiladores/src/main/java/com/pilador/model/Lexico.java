@@ -68,7 +68,9 @@ public class Lexico implements Constants
         {
             String lexeme = input.substring(start, end);
             token = lookupToken(token, lexeme);
-            return new Token(token, lexeme, start);
+
+
+            return new Token(id_string[token], lexeme, start);
         }
     }
 

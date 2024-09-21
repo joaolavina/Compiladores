@@ -1,18 +1,18 @@
 package com.pilador.model;
 public class Token
 {
-    private int id;
+    private String id;
     private String lexeme;
     private int position;
 
-    public Token(int id, String lexeme, int position)
+    public Token(String id, String lexeme, int position)
     {
         this.id = id;
         this.lexeme = lexeme;
         this.position = position;
     }
 
-    public final int getId()
+    public final String getId()
     {
         return id;
     }
@@ -29,6 +29,6 @@ public class Token
 
     public String toString()
     {
-        return id+" ( "+lexeme+" ) @ "+position;
+        return lexeme + " | " + id + " | " + String.valueOf(position);
     };
 }

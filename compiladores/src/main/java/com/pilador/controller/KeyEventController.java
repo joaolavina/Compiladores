@@ -3,7 +3,6 @@ package com.pilador.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -38,7 +37,8 @@ public class KeyEventController {
     public void compileProgram() {
 
         Lexico lexico = new Lexico();
-        lexico.setInput(editorArea.getEditorAreaText());
+        String text = editorArea.getEditorAreaText();
+        lexico.setInput(text);
 
         String message = "";
 
@@ -50,11 +50,11 @@ public class KeyEventController {
                 tokens.add(t);   
             }
 
-            message+= "LEXEMA | POSIÇÃO\n";
+            message+= "LEXEMA | CLASSE | POSIÇÃO\n";
 
             for (int i=0; i<tokens.size(); i++) {
                 Token tkn = tokens.get(i);
-                message += (tkn.getLexeme() + " | " + String.valueOf(tkn.getPosition()) + "\n"); 
+                message += (tkn.toString() + "\n");
             }
 
         } catch ( LexicalError e ) {
