@@ -12,7 +12,7 @@ public class EditorArea extends JPanel {
     private JScrollPane scrollPane;
     private JTextArea textArea;
 
-    public EditorArea(){
+    public EditorArea() {
         textArea = new JTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textArea.setBorder(new NumberedBorder());
@@ -27,5 +27,18 @@ public class EditorArea extends JPanel {
 
     public JTextArea getTextArea() {
         return textArea;
+    }
+
+    public String getEditorAreaText() {
+        return textArea.getText();
+    }
+
+    public void setEditorAreaText(String text) {
+        this.cleanEditorArea();
+        textArea.insert(text, 0);
+    }
+
+    public void cleanEditorArea() {
+        textArea.replaceRange("", 0, this.getEditorAreaText().length());
     }
 }

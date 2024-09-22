@@ -6,6 +6,8 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
+import com.pilador.controller.KeyEventController;
+
 public class MainFrame extends JFrame {
 
     private ToolbarMenu toolbar;
@@ -22,25 +24,26 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Barra de ferramentas
-        toolbar = new ToolbarMenu();
-        add(toolbar, BorderLayout.NORTH);
-
-        // Área de edição de código
-        editorArea = new EditorArea();
-        add(editorArea, BorderLayout.CENTER);
-
-        // Área de mensagem
+        // Ãrea de mensagem
         messageArea = new MessageArea();
         add(messageArea, BorderLayout.SOUTH);
 
-        // Divisor editor/mensagem
-        divider = new DividerPane(editorArea, messageArea);
-        add(divider, BorderLayout.CENTER);
+        // Ãrea de ediÃ§Ã£o de cÃ³digo
+        editorArea = new EditorArea();
+        add(editorArea, BorderLayout.CENTER);
 
         // Barra de status
         statusBar = new StatusBar();
         add(statusBar, BorderLayout.SOUTH);
+
+        // Barra de ferramentas
+        KeyEventController controller = new KeyEventController(messageArea, editorArea, statusBar);
+        toolbar = new ToolbarMenu(controller);
+        add(toolbar, BorderLayout.NORTH);
+
+        // Divisor editor/mensagem
+        divider = new DividerPane(editorArea, messageArea);
+        add(divider, BorderLayout.CENTER);
     }
 
     public ToolbarMenu getToolbar() {
