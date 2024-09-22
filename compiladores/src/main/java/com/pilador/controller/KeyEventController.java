@@ -84,9 +84,12 @@ public class KeyEventController {
 
         try {
             File file = new File(path);
+            String fileName = file.getName();
 
-            if (file.getName().isEmpty() || !(file.getName().endsWith(".txt"))) {
+            if (fileName.isEmpty() || (!fileName.endsWith(".txt") && fileName.contains("."))) {
                 throw new IllegalArgumentException();
+            } else if (!fileName.endsWith(".txt")){
+                file = new File(path.concat(".txt"));
             }
 
             writeFile(file);
