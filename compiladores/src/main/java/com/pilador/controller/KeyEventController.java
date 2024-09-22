@@ -36,9 +36,8 @@ public class KeyEventController {
 
     public void compileProgram() {
 
-        Lexico lexico = new Lexico();
         String text = editorArea.getEditorAreaText();
-        lexico.setInput(text);
+        Lexico lexico = new Lexico(text);
 
         String message = "";
 
@@ -46,19 +45,20 @@ public class KeyEventController {
             Token t = null;
             ArrayList<Token> tokens = new ArrayList<>();
 
-            while ((t = lexico.nextToken()) != null ) {
-                tokens.add(t);   
+            while ((t = lexico.nextToken()) != null) {
+                tokens.add(t);
             }
 
-            message+= "LEXEMA | CLASSE | POSIÇÃO\n";
+            message += "LEXEMA | CLASSE | LINHA\n";
 
-            for (int i=0; i<tokens.size(); i++) {
+            for (int i = 0; i < tokens.size(); i++) {
                 Token tkn = tokens.get(i);
                 message += (tkn.toString() + "\n");
             }
 
-        } catch ( LexicalError e ) {
-            message = e.getMessage() + " em " + e.getPosition();
+        } catch (LexicalError e) {
+            message = "Linha " + e.getPosition() + ": " + e.getMessage();
+            // message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
         } finally {
             resultArea.setMessageAreaText(message);
         }
@@ -78,21 +78,21 @@ public class KeyEventController {
     public void saveFile() {
         String path = statusBar.getText();
 
-        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            path = fileChooser.getSelectedFile().getAbsolutePath();        
+        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getAbsolutePath();
         }
 
         try {
             File file = new File(path);
 
-            if (file.getName().isEmpty() || !(file.getName().endsWith(".txt"))){
+            if (file.getName().isEmpty() || !(file.getName().endsWith(".txt"))) {
                 throw new IllegalArgumentException();
             }
 
             writeFile(file);
         } catch (IllegalArgumentException e) {
             resultArea.setMessageAreaText("Extensão de arquivo inválida.");
-        } 
+        }
     }
 
     private void writeFile(File file) {
@@ -113,7 +113,7 @@ public class KeyEventController {
 
             try (Scanner scanner = new Scanner(file, "UTF-8")) {
 
-                if (!(file.getName().endsWith(".txt"))){
+                if (!(file.getName().endsWith(".txt"))) {
                     throw new IllegalArgumentException();
                 }
                 editorArea.cleanEditorArea();
@@ -127,7 +127,7 @@ public class KeyEventController {
                 resultArea.cleanMessageArea();
             } catch (IOException e) {
                 resultArea.setMessageAreaText("Erro ao abrir arquivo: " + e.getMessage());
-            } 
+            }
         }
     }
 
