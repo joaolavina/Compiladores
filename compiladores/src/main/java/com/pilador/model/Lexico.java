@@ -75,11 +75,9 @@ public class Lexico implements Constants {
     private String getSymbolString(int start){
         String symbolString = input.substring(start, start+1);
 
-        while (start<input.length()-1 && input.charAt(start+1)!='\n' && 
-           input.charAt(start+1)!=' ' &&
-            input.charAt(start+1)!='\t'){
-                start++;
-                symbolString += input.substring(start, start+1);
+        while (start<input.length()-1 && !Character.isWhitespace(input.charAt(start + 1))) {
+            start++;
+            symbolString += input.substring(start, start+1);
         }
 
         return symbolString;
