@@ -53,8 +53,10 @@ public class Lexico implements Constants {
                 }
             }
         }
+
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
-            throw new LexicalError(SCANNER_ERROR[lastState], getLine(start));
+            throw new LexicalError(SCANNER_ERROR[lastState], getLine(start), getSymbolString(start));
+            // input.substring(start,position);
 
         position = end;
 
@@ -68,6 +70,19 @@ public class Lexico implements Constants {
 
             return new Token(id_string[token], lexeme, getLine(start));
         }
+    }
+
+    private String getSymbolString(int start){
+        String symbolString = input.substring(start, start+1);
+
+        while (start<input.length()-1 && input.charAt(start+1)!='\n' && 
+           input.charAt(start+1)!=' ' &&
+            input.charAt(start+1)!='\t'){
+                start++;
+                symbolString += input.substring(start, start+1);
+        }
+
+        return symbolString;
     }
 
     private int nextState(char c, int state) {

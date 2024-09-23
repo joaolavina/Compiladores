@@ -1090,7 +1090,7 @@ public interface ScannerConstants
         "Erro identificando float",
         "",
         "Comentário de bloco inválido ou não finalizado",
-        "Erro identificando id",
+        " identificador inválido",
         "",
         "",
         "Comentário de bloco inválido ou não finalizado",

@@ -29,6 +29,6 @@ public class Token
 
     public String toString()
     {
-        return lexeme + " | " + id + " | " + String.valueOf(position);
+        return String.valueOf(position) + " | "  + id + " | " + lexeme;
     };
 }

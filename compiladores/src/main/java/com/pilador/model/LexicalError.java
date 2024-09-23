@@ -5,9 +5,9 @@ public class LexicalError extends AnalysisError {
         super(msg, position);
     }
     
-    // public LexicalError(String msg, int position, String symbol) {
-    //     super(msg, position, symbol);
-    // }
+    public LexicalError(String msg, int position, String symbol) {
+        super(msg, position, symbol);
+    }
 
     public LexicalError(String msg) {
         super(msg);

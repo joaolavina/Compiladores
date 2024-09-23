@@ -49,16 +49,17 @@ public class KeyEventController {
                 tokens.add(t);
             }
 
-            message += "LEXEMA | CLASSE | LINHA\n";
+            message += "LINHA | CLASSE | LEXEMA\n";
 
             for (int i = 0; i < tokens.size(); i++) {
                 Token tkn = tokens.get(i);
                 message += (tkn.toString() + "\n");
             }
 
+            message += "\n\nPrograma compilado com sucesso";
+
         } catch (LexicalError e) {
-            message = "Linha " + e.getPosition() + ": " + e.getMessage();
-            // message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
+            message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
         } finally {
             resultArea.setMessageAreaText(message);
         }
