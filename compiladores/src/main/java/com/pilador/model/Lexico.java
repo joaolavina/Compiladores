@@ -1,5 +1,7 @@
 package com.pilador.model;
 
+import java.util.Arrays;
+
 public class Lexico implements Constants {
     private int position;
     private String input;
@@ -67,6 +69,9 @@ public class Lexico implements Constants {
         else {
             String lexeme = input.substring(start, end);
             token = lookupToken(token, lexeme);
+
+            if ((token == 2) && !(Arrays.asList(SPECIAL_CASES_KEYS).contains(lexeme)))
+                throw new LexicalError(SCANNER_ERROR[1], getLine(start), getSymbolString(start));
 
             return new Token(id_string[token], lexeme, getLine(start));
         }

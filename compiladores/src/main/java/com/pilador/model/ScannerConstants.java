@@ -1063,7 +1063,7 @@ public interface ScannerConstants
     String[] SCANNER_ERROR =
     {
         " símbolo inválido",
-        "",
+        " palavra reservada inválida",
         "",
         "Constante_string inválida",
         "Erro identificando \"&&\"",
