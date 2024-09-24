@@ -9,6 +9,7 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.pilador.model.FileHandler;
 import com.pilador.model.LexicalError;
 import com.pilador.model.Lexico;
 import com.pilador.model.Token;
@@ -22,6 +23,7 @@ public class KeyEventController {
     private EditorArea editorArea;
     private StatusBar statusBar;
     private JFileChooser fileChooser;
+    private FileHandler fileHandler;
 
     public KeyEventController(MessageArea resultArea, EditorArea editorArea, StatusBar statusBar) {
         this.resultArea = resultArea;
@@ -75,28 +77,15 @@ public class KeyEventController {
         resultArea.cleanMessageArea();
         statusBar.cleanStatusBar();
     }
-
-    public void saveFile() {
+    public void saveFile(){
         String path = statusBar.getText();
 
-        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            path = fileChooser.getSelectedFile().getAbsolutePath();
-        }
-
         try {
-            File file = new File(path);
-            String fileName = file.getName();
-
-            if (fileName.isEmpty() || (!fileName.endsWith(".txt") && fileName.contains("."))) {
-                throw new IllegalArgumentException();
-            } else if (!fileName.endsWith(".txt")){
-                file = new File(path.concat(".txt"));
-            }
-
-            writeFile(file);
-        } catch (IllegalArgumentException e) {
+        fileHandler.saveFile(path);
+        } catch (IllegalArgumentException | IOException e) {
             resultArea.setMessageAreaText("Extensão de arquivo inválida.");
         }
+
     }
 
     private void writeFile(File file) {
