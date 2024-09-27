@@ -73,7 +73,17 @@ public class Lexico implements Constants {
             if ((token == 2) && !(Arrays.asList(SPECIAL_CASES_KEYS).contains(lexeme)))
                 throw new LexicalError(SCANNER_ERROR[1], getLine(start), getSymbolString(start));
 
-            return new Token(id_string[token], lexeme, getLine(start));
+            return new Token(getClass(token), lexeme, getLine(start));
+        }
+    }
+
+    private String getClass (int token){
+        if (token>6 && token<20){
+            return "pr";
+        } else if (token>19 && token<36) {
+            return "se";
+        } else {
+            return id_string[token];
         }
     }
 
