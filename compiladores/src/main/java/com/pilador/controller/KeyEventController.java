@@ -11,6 +11,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.pilador.model.LexicalError;
 import com.pilador.model.Lexico;
+import com.pilador.model.SemanticError;
+import com.pilador.model.Semantico;
+import com.pilador.model.Sintatico;
+import com.pilador.model.SyntaticError;
 import com.pilador.model.Token;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
@@ -38,6 +42,8 @@ public class KeyEventController {
 
         String text = editorArea.getEditorAreaText();
         Lexico lexico = new Lexico(text);
+        Sintatico sintatico = new Sintatico();
+        Semantico semantico = new Semantico();
 
         String message = "";
 
@@ -56,10 +62,24 @@ public class KeyEventController {
                 message += (tkn.toString() + "\n");
             }
 
+            sintatico.parse(lexico, semantico);
+
             message += "\n\nPrograma compilado com sucesso";
 
         } catch (LexicalError e) {
             message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
+        } catch (SyntaticError e) {
+            System.out.println(e.getPosition() + " símbolo encontrado: na entrada " + e.getMessage());
+
+            // Trata erros sintáticos
+            // linha sugestão: converter getPosition em linha
+            // símbolo encontrado sugestão: implementar um método getToken no sintatico
+            // símbolos esperados, alterar ParserConstants.java, String[] PARSER_ERROR
+            // consultar os símbolos esperados no GALS (em Documentação > Tabel
+            e.printStackTrace();
+        } catch (SemanticError e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             resultArea.setMessageAreaText(message);
         }
@@ -89,7 +109,7 @@ public class KeyEventController {
 
             if (fileName.isEmpty() || (!fileName.endsWith(".txt") && fileName.contains("."))) {
                 throw new IllegalArgumentException();
-            } else if (!fileName.endsWith(".txt")){
+            } else if (!fileName.endsWith(".txt")) {
                 file = new File(path.concat(".txt"));
             }
 

@@ -73,7 +73,7 @@ public class Lexico implements Constants {
             if ((token == 2) && !(Arrays.asList(SPECIAL_CASES_KEYS).contains(lexeme)))
                 throw new LexicalError(SCANNER_ERROR[1], getLine(start), getSymbolString(start));
 
-            return new Token(getClass(token), lexeme, getLine(start));
+            return new Token(getClass(token), lexeme, getLine(start), token);
         }
     }
 
