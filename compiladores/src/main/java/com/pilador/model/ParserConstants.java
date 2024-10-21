@@ -125,8 +125,8 @@ public interface ParserConstants
     {
         "",
         "esperado EOF",
-        "esperado pr",
-        "esperado id",
+        "esperado palavra reservada",
+        "esperado identificador",
         "esperado constante_int",
         "esperado constante_float",
         "esperado constante_string",
@@ -143,55 +143,55 @@ public interface ParserConstants
         "esperado repeat",
         "esperado until",
         "esperado while",
-        "esperado \"&&\"",
-        "esperado \"||\"",
-        "esperado \"!\"",
-        "esperado \"==\"",
-        "esperado \"!=\"",
-        "esperado \">\"",
-        "esperado \"<\"",
-        "esperado \"+\"",
-        "esperado \"-\"",
-        "esperado \"*\"",
-        "esperado \"/\"",
-        "esperado \",\"",
-        "esperado \";\"",
-        "esperado \"=\"",
-        "esperado \"(\"",
-        "esperado \")\"",
-        "encontrado EOF", // <programa> inválido
-        "<lista_instr> inválido",
-        "<opcao_instr> inválido",
-        "<instrucao> inválido",
-        "<opcao_instr2> inválido",
-        "<lista_id> inválido",
-        "<opcao_id> inválido",
-        "<cmd> inválido",
-        "<lista_cmd> inválido",
-        "<opcao_cmd> inválido",
-        "<atrib> inválido",
-        "<entrada> inválido",
-        "<lista_entra> inválido",
-        "<opcao_entra> inválido",
-        "<opcao_entra1> inválido",
-        "<saida> inválido",
-        "<lista_expr> inválido",
-        "<opcao_expr> inválido",
-        "<select> inválido",
-        "<opcao_elif> inválido",
-        "<opcao_else> inválido",
-        "<repeat> inválido",
-        "<opcao_rep> inválido",
-        "<expressao> inválido",
-        "<expressao1> inválido",
-        "<elemento> inválido",
-        "<relacional> inválido",
-        "<relacional1> inválido",
-        "<operador_relacional> inválido",
-        "<aritmetica> inválido",
-        "<aritmetica1> inválido",
-        "<termo> inválido",
-        "<termo1> inválido",
-        "<fator> inválido"
+        "esperado &&",
+        "esperado ||",
+        "esperado !",
+        "esperado ==",
+        "esperado !=",
+        "esperado >",
+        "esperado <",
+        "esperado +",
+        "esperado -",
+        "esperado *",
+        "esperado /",
+        "esperado ,",
+        "esperado ;",
+        "esperado =",
+        "esperado (",
+        "esperado )",
+        "esperado main", // <programa> inválido
+        "esperado identificador  if  read  write  writeln  repeat", // <lista_instr> inválido
+        "esperado identificador  end  if  read  write  writeln  repeat", // <opcao_instr> inválido
+        "esperado identificador  if  read  write  writeln  repeat", // <instrucao> inválido
+        "esperado ;  =", // <opcao_instr2> inválido
+        "esperado identificador", // <lista_id> inválido
+        "esperado ,  ;  =", // <opcao_id> inválido
+        "esperado identificador  if  read  write  writeln  repeat", // <cmd> inválido
+        "esperado identificador  if read  write  writeln  repeat", // <lista_cmd> inválido
+        "esperado identificador  end  if  elif  else", // <opcao_cmd> inválido
+        "esperado identificador", // <atrib> inválido
+        "esperado read", // <entrada> inválido
+        "esperado identificador  constante_string", // <lista_entra> inválido
+        "esperado identificador", // <opcao_entra> inválido
+        "esperado ,  )", // <opcao_entra1> inválido
+        "esperado", // <saida> inválido
+        "esperado expressao", // <lista_expr> inválido
+        "esperado write  writeln", // <opcao_expr> inválido
+        "esperado if", // <select> inválido
+        "esperado end  elif  else", // <opcao_elif> inválido
+        "esperado end  else", // <opcao_else> inválido
+        "esperado repeat", // <repeat> inválido
+        "esperado until  while",  // <opcao_rep> inválido
+        "esperado expressao",  // <expressao> inválido
+        "esperado expressao",  // <expressao1> inválido
+        "esperado expressao",  // <elemento> inválido
+        "esperado expressao",  // <relacional> inválido
+        "esperado expressao",  // <relacional1> inválido
+        "esperado ==  !=  >  <",  // <operador_relacional> inválido
+        "esperado expressao",  // <aritmetica> inválido
+        "esperado expressao",  // <aritmetica1> inválido
+        "esperado expressao",  // <termo> inválido
+        "esperado expressao",  // <termo1> inválido
+        "esperado expressao"  // <fator> inválido
     };
 }
