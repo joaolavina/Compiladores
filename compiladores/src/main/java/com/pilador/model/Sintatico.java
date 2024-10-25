@@ -39,7 +39,7 @@ public class Sintatico implements Constants
         int x = ((Integer)stack.pop()).intValue();
         int a = currentToken.getId();
 
-        if (x == 2) //EPSILON
+        if (x == EPSILON)
         {
             return false;
         }

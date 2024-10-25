@@ -69,13 +69,11 @@ public class KeyEventController {
         } catch (LexicalError e) {
             message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
         } catch (SyntaticError e) {
-            System.out.println(e.getPosition() + " símbolo encontrado: na entrada " + e.getMessage());
+            message = "Linha " + e.getPosition() + ": " + e.getMessage();
 
             // Trata erros sintáticos
             // linha sugestão: converter getPosition em linha
             // símbolo encontrado sugestão: implementar um método getToken no sintatico
-            // símbolos esperados, alterar ParserConstants.java, String[] PARSER_ERROR
-            // consultar os símbolos esperados no GALS (em Documentação > Tabel
             e.printStackTrace();
         } catch (SemanticError e) {
             // TODO Auto-generated catch block
