@@ -1,6 +1,12 @@
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\controller\KeyEventController.java
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\Main.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\AnalysisError.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\Constants.java
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\FileHandler.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\LexicalError.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\Lexico.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\ScannerConstants.java
+C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\model\Token.java
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\view\DividerPane.java
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\view\EditorArea.java
 C:\Users\jg_la\Documents\FURB\Fase4\Compiladores\compiladores\src\main\java\com\pilador\view\MainFrame.java

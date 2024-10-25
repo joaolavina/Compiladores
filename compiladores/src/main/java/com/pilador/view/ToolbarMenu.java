@@ -41,8 +41,8 @@ public class ToolbarMenu extends JToolBar {
     }
 
     private JButton createButton(String text, String toolTip) {
-        String iconPath = "compiladores/src/main/resources/images/" + text + ".png";
-        Icon icon = new ImageIcon(iconPath);
+        String iconPath = "/images/" + text + ".png";
+        Icon icon = new ImageIcon(getClass().getResource(iconPath));
         JButton btn = new JButton(text + " [" + toolTip + "] ", icon);
         btn.setToolTipText(toolTip);
 
