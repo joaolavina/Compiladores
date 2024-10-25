@@ -7,6 +7,10 @@ public class SyntaticError extends AnalysisError
         super(msg, position);
     }
 
+    public SyntaticError(String msg, int position, String symbol) {
+        super(msg, position, symbol);
+    }
+
     public SyntaticError(String msg)
     {
         super(msg);
