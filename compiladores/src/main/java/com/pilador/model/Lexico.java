@@ -58,7 +58,7 @@ public class Lexico implements Constants {
 
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
             throw new LexicalError(SCANNER_ERROR[lastState], getLine(start), getSymbolString(start));
-            // input.substring(start,position);
+        // input.substring(start,position);
 
         position = end;
 
@@ -73,26 +73,16 @@ public class Lexico implements Constants {
             if ((token == 2) && !(Arrays.asList(SPECIAL_CASES_KEYS).contains(lexeme)))
                 throw new LexicalError(SCANNER_ERROR[1], getLine(start), getSymbolString(start));
 
-            return new Token(getClass(token), lexeme, getLine(start), token);
+            return new Token(token, lexeme, getLine(start));
         }
     }
 
-    private String getClass (int token){
-        if (token>6 && token<20){
-            return "pr";
-        } else if (token>19 && token<36) {
-            return "se";
-        } else {
-            return id_string[token];
-        }
-    }
+    private String getSymbolString(int start) {
+        String symbolString = input.substring(start, start + 1);
 
-    private String getSymbolString(int start){
-        String symbolString = input.substring(start, start+1);
-
-        while (start<input.length()-1 && !Character.isWhitespace(input.charAt(start + 1))) {
+        while (start < input.length() - 1 && !Character.isWhitespace(input.charAt(start + 1))) {
             start++;
-            symbolString += input.substring(start, start+1);
+            symbolString += input.substring(start, start + 1);
         }
 
         return symbolString;

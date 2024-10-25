@@ -1,20 +1,18 @@
 package com.pilador.model;
 
 public class Token {
-    private String className;
+    private int id;
     private String lexeme;
     private int position;
-    private int id;
 
-    public Token(String className, String lexeme, int position, int id) {
-        this.className = className;
+    public Token(int id, String lexeme, int position) {
+        this.id = id;
         this.lexeme = lexeme;
         this.position = position;
-        this.id = id;
     }
 
-    public final String getClassName() {
-        return className;
+    public final int getId() {
+        return id;
     }
 
     public final String getLexeme() {
@@ -25,11 +23,17 @@ public class Token {
         return position;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String toString() {
-        return String.valueOf(position) + " | " + className + " | " + lexeme;
+        return String.valueOf(position) + " | " + getClass(id) + " | " + lexeme;
     };
+
+    private String getClass(int token) {
+        if (token > 6 && token < 20) {
+            return "pr";
+        } else if (token > 19 && token < 36) {
+            return "se";
+        } else {
+            return Constants.id_string[token];
+        }
+    }
 }

@@ -1,81 +1,80 @@
 package com.pilador.model;
 
 public interface Constants extends ScannerConstants, ParserConstants {
-    String EPSILON = "ε";
-    String DOLLAR = "$";
-
-    String t_pr = "pr";
-    String t_id = "id";
-    String t_int = "int";
-    String t_float = "float";
-    String t_string = "string";
-    String t_main = "main";
-    String t_end = "end";
-    String t_if = "if";
-    String t_elif = "elif";
-    String t_else = "else";
-    String t_false = "false";
-    String t_true = "true";
-    String t_read = "read";
-    String t_write = "write";
-    String t_writeln = "writeln";
-    String t_repeat = "repeat";
-    String t_until = "until";
-    String t_while = "while";
-    String t_TOKEN_20 = "&&";
-    String t_TOKEN_21 = "||";
-    String t_TOKEN_22 = "!";
-    String t_TOKEN_23 = "==";
-    String t_TOKEN_24 = "!=";
-    String t_TOKEN_25 = ">";
-    String t_TOKEN_26 = "<";
-    String t_TOKEN_27 = "+";
-    String t_TOKEN_28 = "-";
-    String t_TOKEN_29 = "*";
-    String t_TOKEN_30 = "/";
-    String t_TOKEN_31 = ",";
-    String t_TOKEN_32 = ";";
-    String t_TOKEN_33 = "=";
-    String t_TOKEN_34 = "(";
-    String t_TOKEN_35 = ")";
+    int EPSILON = 0;
+    int DOLLAR = 1;
+    int t_pr = 2;
+    int t_id = 3;
+    int t_int = 4;
+    int t_float = 5;
+    int t_string = 6;
+    int t_main = 7;
+    int t_end = 8;
+    int t_if = 9;
+    int t_elif = 10;
+    int t_else = 11;
+    int t_false = 12;
+    int t_true = 13;
+    int t_read = 14;
+    int t_write = 15;
+    int t_writeln = 16;
+    int t_repeat = 17;
+    int t_until = 18;
+    int t_while = 19;
+    int t_TOKEN_20 = 20; // "&&"
+    int t_TOKEN_21 = 21; // "||"
+    int t_TOKEN_22 = 22; // "!"
+    int t_TOKEN_23 = 23; // "=="
+    int t_TOKEN_24 = 24; // "!="
+    int t_TOKEN_25 = 25; // ">"
+    int t_TOKEN_26 = 26; // "<"
+    int t_TOKEN_27 = 27; // "+"
+    int t_TOKEN_28 = 28; // "-"
+    int t_TOKEN_29 = 29; // "*"
+    int t_TOKEN_30 = 30; // "/"
+    int t_TOKEN_31 = 31; // ","
+    int t_TOKEN_32 = 32; // ";"
+    int t_TOKEN_33 = 33; // "="
+    int t_TOKEN_34 = 34; // "("
+    int t_TOKEN_35 = 35; // ")"
 
     String[] id_string = {
-            EPSILON,
-            DOLLAR,
-            t_pr,
-            t_id,
-            t_int,
-            t_float,
-            t_string,
-            t_main,
-            t_end,
-            t_if,
-            t_elif,
-            t_else,
-            t_false,
-            t_true,
-            t_read,
-            t_write,
-            t_writeln,
-            t_repeat,
-            t_until,
-            t_while,
-            t_TOKEN_20,
-            t_TOKEN_21,
-            t_TOKEN_22,
-            t_TOKEN_23,
-            t_TOKEN_24,
-            t_TOKEN_25,
-            t_TOKEN_26,
-            t_TOKEN_27,
-            t_TOKEN_28,
-            t_TOKEN_29,
-            t_TOKEN_30,
-            t_TOKEN_31,
-            t_TOKEN_32,
-            t_TOKEN_33,
-            t_TOKEN_34,
-            t_TOKEN_35
+            "ε",
+            "$",
+            "pr",
+            "id",
+            "int",
+            "float",
+            "string",
+            "main",
+            "end",
+            "if",
+            "elif",
+            "else",
+            "false",
+            "true",
+            "read",
+            "write",
+            "writeln",
+            "repeat",
+            "until",
+            "while",
+            "&&",
+            "||",
+            "!",
+            "==",
+            "!=",
+            ">",
+            "<",
+            "+",
+            "-",
+            "*",
+            "/",
+            ",",
+            ";",
+            "=",
+            "(",
+            ")"
     };
 
 }
