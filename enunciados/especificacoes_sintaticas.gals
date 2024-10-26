@@ -7,7 +7,7 @@ ParserName = Sintatico
 SemanticName = Semantico
 ScannerCaseSensitive = true
 ScannerTable = Compact
-Input = Stream
+Input = String
 Parser = LL
 #RegularDefinitions
 
@@ -163,7 +163,7 @@ Parser = LL
 
 <lista_instr> ::= <instrucao> <opcao_instr> ;
 
-<opcao_instr> ::= <lista_instr> | î ;
+<opcao_instr> ::= <lista_instr> | Ã® ;
 
 <instrucao> ::= <lista_id> <opcao_instr2> | <entrada> ";" | <saida> ";" | <select> ";" | <repeat> ";" ;
 
@@ -171,13 +171,13 @@ Parser = LL
 
 <lista_id> ::= id <opcao_id> ;
 
-<opcao_id> ::=  "," <lista_id> | î ;
+<opcao_id> ::=  "," <lista_id> | Ã® ;
 
 <cmd> ::= <atrib> | <entrada> | <saida> | <select> | <repeat> ;
 
 <lista_cmd> ::= <cmd> ";" <opcao_cmd> ;
 
-<opcao_cmd> ::= <lista_cmd> | î ;
+<opcao_cmd> ::= <lista_cmd> | Ã® ;
 
 <atrib> ::= <lista_id> "=" <expressao> ;
 
@@ -187,19 +187,19 @@ Parser = LL
 
 <opcao_entra> ::= id <opcao_entra1> ;
 
-<opcao_entra1> ::= î | "," <lista_entra> ;
+<opcao_entra1> ::= Ã® | "," <lista_entra> ;
 
 <saida> ::= write "(" <lista_expr> ")" | writeln "(" <lista_expr> ")" ;
 
 <lista_expr> ::= <expressao> <opcao_expr> ;
 
-<opcao_expr> ::= "," <lista_expr> | î ;
+<opcao_expr> ::= "," <lista_expr> | Ã® ;
 
 <select> ::= if <expressao> <lista_cmd> <opcao_elif> <opcao_else> end ;
 
-<opcao_elif> ::= î | elif <expressao> <lista_cmd> <opcao_elif> ;
+<opcao_elif> ::= Ã® | elif <expressao> <lista_cmd> <opcao_elif> ;
 
-<opcao_else> ::= î | else <lista_cmd> ;
+<opcao_else> ::= Ã® | else <lista_cmd> ;
 
 <repeat> ::= repeat <lista_cmd> <opcao_rep> <expressao> ;
 
@@ -207,23 +207,23 @@ Parser = LL
 
 <expressao> ::= <elemento> <expressao1> ;
 
-<expressao1> ::= î | "&&" <elemento> <expressao1> | "||" <elemento> <expressao1> ;
+<expressao1> ::= Ã® | "&&" <elemento> <expressao1> | "||" <elemento> <expressao1> ;
 
 <elemento> ::= <relacional> | true | false | "!" <elemento> ;
 
 <relacional> ::= <aritmetica> <relacional1> ;
 
-<relacional1> ::= î | <operador_relacional> <aritmetica> ;
+<relacional1> ::= Ã® | <operador_relacional> <aritmetica> ;
 
 <operador_relacional> ::= "==" | "!=" | "<" | ">" ;
 
 <aritmetica> ::= <termo> <aritmetica1> ;
 
-<aritmetica1> ::= î | "+" <termo> <aritmetica1> | "-" <termo> <aritmetica1> ;
+<aritmetica1> ::= Ã® | "+" <termo> <aritmetica1> | "-" <termo> <aritmetica1> ;
 
 <termo> ::= <fator> <termo1> ;
 
-<termo1> ::= î | "*" <fator> <termo1> | "/" <fator> <termo1> ;
+<termo1> ::= Ã® | "*" <fator> <termo1> | "/" <fator> <termo1> ;
 
 <fator> ::= id | int | float | string | "(" <expressao> ")" | "+" <fator> | "-" <fator> ; 
 

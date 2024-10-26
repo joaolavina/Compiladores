@@ -50,36 +50,38 @@ public class KeyEventController {
         String message = "";
 
         try {
-            Token t = null;
-            ArrayList<Token> tokens = new ArrayList<>();
+            // Token t = null;
+            // ArrayList<Token> tokens = new ArrayList<>();
 
-            while ((t = lexico.nextToken()) != null) {
-                tokens.add(t);
-            }
+            // while ((t = lexico.nextToken()) != null) {
+            //     tokens.add(t);
+            // }
 
-            message += "LINHA | CLASSE | LEXEMA\n";
+            // message += "LINHA | CLASSE | LEXEMA\n";
 
-            for (int i = 0; i < tokens.size(); i++) {
-                Token tkn = tokens.get(i);
-                message += (tkn.toString() + "\n");
-            }
+            // for (int i = 0; i < tokens.size(); i++) {
+            //     Token tkn = tokens.get(i);
+            //     message += (tkn.toString() + "\n"); // trocar de novo depois para position = linha
+            // }
+
+            // System.out.println(message);
 
             sintatico.parse(lexico, semantico);
 
-            message += "\n\nPrograma compilado com sucesso";
+            message += "Programa compilado com sucesso";
 
         } catch (LexicalError e) {
-            message = "Linha " + e.getPosition() + ": " + e.getSymbol() + e.getMessage();
+            message = "Erro na linha " + e.getPosition() + " – " + e.getSymbol() + e.getMessage();
         } catch (SyntaticError e) {
-            message = "Linha " + e.getPosition() + ": " + e.getMessage();
+            message = "Erro na linha " + e.getPosition() + " – " + e.getMessage();
 
             // Trata erros sintáticos
-            // linha sugestão: converter getPosition em linha
+            // linha sugestão: converter getPosition em linha // ok
             // símbolo encontrado sugestão: implementar um método getToken no sintatico
-            e.printStackTrace();
+            // e.printStackTrace();
         } catch (SemanticError e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            // e.printStackTrace();
         } finally {
             resultArea.setMessageAreaText(message);
         }

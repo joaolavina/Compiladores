@@ -20,16 +20,16 @@ public class Sintatico implements Constants
         return x >= FIRST_NON_TERMINAL && x < FIRST_SEMANTIC_ACTION;
     }
 
-    private static final boolean isSemanticAction(int x)
-    {
-        return x >= FIRST_SEMANTIC_ACTION;
-    }
+    // private static final boolean isSemanticAction(int x)
+    // {
+    //     return x >= FIRST_SEMANTIC_ACTION;
+    // }
 
     private boolean step() throws LexicalError, SyntaticError, SemanticError
     {
         if (currentToken == null)
         {
-            int pos = 0;
+            int pos = 0; // = 0
             if (previousToken != null)
                 pos = previousToken.getPosition()+previousToken.getLexeme().length();
 
@@ -58,7 +58,7 @@ public class Sintatico implements Constants
             }
             else
             {
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
+                throw new SyntaticError(errorMessageConstructor(currentToken, x), scanner.getLine(currentToken.getPosition()));
             }
         }
         else if (isNonTerminal(x))
@@ -66,7 +66,7 @@ public class Sintatico implements Constants
             if (pushProduction(x, a))
                 return false;
             else
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
+                throw new SyntaticError(errorMessageConstructor(currentToken, x), scanner.getLine(currentToken.getPosition()));
         }
         else // isSemanticAction(x)
         {
@@ -75,6 +75,7 @@ public class Sintatico implements Constants
         }
     }
 
+    @SuppressWarnings({ "removal", "unchecked" })
     private boolean pushProduction(int topStack, int tokenInput)
     {
         int p = PARSER_TABLE[topStack-FIRST_NON_TERMINAL][tokenInput-1];
@@ -92,6 +93,30 @@ public class Sintatico implements Constants
             return false;
     }
 
+    private String errorMessageConstructor(Token currToken, int x) {
+        String message = "Encontrado ";
+
+        String lexeme = currToken.getLexeme();
+        int tokenId = currToken.getId();
+
+        switch (tokenId) {
+            case 1:
+                message += "EOF ";
+                break;
+            case 6:
+                message += "constante_string";
+                break;
+            default:
+                message += lexeme;
+        }
+
+        message += " " + PARSER_ERROR[x];;
+
+        return message;
+    }
+
+
+    @SuppressWarnings({ "removal", "unchecked" })
     public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError
     {
         this.scanner = scanner;
@@ -103,7 +128,7 @@ public class Sintatico implements Constants
 
         currentToken = scanner.nextToken();
 
-        while ( ! step() )
-            ;
+        while ( ! step() );
     }
+
 }
