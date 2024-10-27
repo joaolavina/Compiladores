@@ -1,13 +1,9 @@
 package com.pilador.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JOptionPane;
 
 import com.pilador.model.FileHandler;
 import com.pilador.model.LexicalError;
@@ -16,7 +12,6 @@ import com.pilador.model.SemanticError;
 import com.pilador.model.Semantico;
 import com.pilador.model.Sintatico;
 import com.pilador.model.SyntaticError;
-import com.pilador.model.Token;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -29,19 +24,16 @@ public class KeyEventController {
     private JFileChooser fileChooser;
     private FileHandler fileHandler;
 
-    public KeyEventController(MessageArea resultArea, EditorArea editorArea, StatusBar statusBar) {
+    public KeyEventController(MessageArea resultArea, EditorArea editorArea, StatusBar statusBar, JFileChooser fileChooser) {
         this.resultArea = resultArea;
         this.editorArea = editorArea;
         this.statusBar = statusBar;
+        this.fileChooser = fileChooser;
 
-        fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
-        fileChooser.setFileFilter(filter);
-        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileHandler = new FileHandler();
     }
 
-    public void compileProgram() {
-
+    public void compileProgramAction() {
         String text = editorArea.getEditorAreaText();
         Lexico lexico = new Lexico(text);
         Sintatico sintatico = new Sintatico();
@@ -75,97 +67,143 @@ public class KeyEventController {
         } catch (SyntaticError e) {
             message = "Erro na linha " + e.getPosition() + " – " + e.getMessage();
 
-            // Trata erros sintáticos
-            // linha sugestão: converter getPosition em linha // ok
-            // símbolo encontrado sugestão: implementar um método getToken no sintatico
             // e.printStackTrace();
         } catch (SemanticError e) {
-            // TODO Auto-generated catch block
             // e.printStackTrace();
         } finally {
             resultArea.setMessageAreaText(message);
         }
-
     }
 
-    public void showTeamInfo() {
+    public void showTeamInfoAction() {
         resultArea.setMessageAreaText("Equipe: Cristina, Daniel e João Gabriel.");
     }
 
-    public void newFile() {
-        editorArea.cleanEditorArea();
-        resultArea.cleanMessageArea();
-        statusBar.cleanStatusBar();
-    }
-    public void saveFile(){
-        String path = statusBar.getText();
+    public void newFileAction() {
+        String text = editorArea.getEditorAreaText();
 
-        if (statusBar.getText().isEmpty() && fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            path = fileChooser.getSelectedFile().getAbsolutePath();
+        if (!confirmNewFileAction(text))
+            return;
+
+        editorArea.cleanEditorArea();
+        statusBar.cleanStatusBar();
+
+        resultArea.setMessageAreaText("Novo arquivo aberto com sucesso.");
+    }
+
+    private boolean confirmNewFileAction (String text){
+        if (text.isBlank())
+            return true;
+
+        int option = JOptionPane.showConfirmDialog(null,
+        "Deseja realmente abrir um novo arquivo?", 
+        "ATENÇÃO", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) 
+            return true;
+        else {
+            resultArea.setMessageAreaText("Ação de novo arquivo cancelada.");
+            return false;
         }
+    }
+
+    public void saveFileAction(){
+        fileChooser.setDialogTitle("Salvar arquivo");
+        fileChooser.setSelectedFile(new File(statusBar.getText()));
+
+        if (fileChooser.showSaveDialog(fileChooser) != JFileChooser.APPROVE_OPTION) { 
+            resultArea.setMessageAreaText("Ação de salvar arquivo cancelada.");
+            return;
+        }
+
+        File currentFile = fileChooser.getSelectedFile();
+
+        if (!confirmSaveFileAction(currentFile))
+            return;
+
+        String text = editorArea.getEditorAreaText();
+        String path = currentFile.getAbsolutePath();
+            
+        try {
+            String resultPath = fileHandler.saveFile(path, text);
+
+            statusBar.setStatusBarText(resultPath);
+        } catch (RuntimeException e) {
+            resultArea.setMessageAreaText(e.getMessage());
+        }
+
+        resultArea.setMessageAreaText("Arquivo salvo com sucesso.");
+    }
+
+    private boolean confirmSaveFileAction (File currentFile){
+        if (!currentFile.exists())
+            return true;
+
+        int option = JOptionPane.showConfirmDialog(fileChooser, 
+            "O arquivo existente será sobrescrito.", 
+            "ATENÇÃO", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) 
+            return true;
+        else {
+            resultArea.setMessageAreaText("Ação de salvar arquivo cancelada.");
+            return false;
+        }
+    }
+
+    public void openFileAction() {
+
+        if (fileChooser.showOpenDialog(fileChooser) != JFileChooser.APPROVE_OPTION) { 
+            resultArea.setMessageAreaText("Ação de abrir arquivo cancelada.");
+            return;
+        }
+
+        File currentFile = fileChooser.getSelectedFile();
+
+        if (!confirmOpenFileAction(currentFile))
+            return;
 
         try {
-            File file = new File(path);
-            String fileName = file.getName();
-
-            if (fileName.isEmpty() || (!fileName.endsWith(".txt") && fileName.contains("."))) {
-                throw new IllegalArgumentException();
-            } else if (!fileName.endsWith(".txt")) {
-                file = new File(path.concat(".txt"));
-            }
-
-            writeFile(file);
-        } catch (IllegalArgumentException e) {
-            resultArea.setMessageAreaText("Extensão de arquivo inválida.");
-        }
-
-    }
-
-    private void writeFile(File file) {
-        try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
-            String text = editorArea.getEditorAreaText();
-            writer.print(text);
-
-        } catch (IOException e) {
-            resultArea.setMessageAreaText("Erro ao salvar arquivo: " + e.getMessage());
-        }
-
-        statusBar.setStatusBarText(file.getAbsolutePath());
-    }
-
-    public void openFile() {
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+            
+            editorArea.cleanEditorArea();
 
-            try (Scanner scanner = new Scanner(file, "UTF-8")) {
+            String[] result = fileHandler.openFile(file);
 
-                if (!(file.getName().endsWith(".txt"))) {
-                    throw new IllegalArgumentException();
-                }
-                editorArea.cleanEditorArea();
+            editorArea.setEditorAreaText(result[0]);
+            statusBar.setStatusBarText(result[1]);
+        } catch (RuntimeException e) {
+            resultArea.setMessageAreaText(e.getMessage());
+        }
 
-                while (scanner.hasNextLine()) {
-                    String linha = scanner.nextLine();
-                    editorArea.getTextArea().append(linha + "\n");
-                }
+        resultArea.setMessageAreaText("Arquivo aberto com sucesso.");
+    }
 
-                statusBar.setStatusBarText(file.getAbsolutePath());
-                resultArea.cleanMessageArea();
-            } catch (IOException e) {
-                resultArea.setMessageAreaText("Erro ao abrir arquivo: " + e.getMessage());
-            }
+    private boolean confirmOpenFileAction (File currentFile) {
+        if (!currentFile.getAbsolutePath().equals(statusBar.getText()))
+            return true;
+
+        int option = JOptionPane.showConfirmDialog(null, 
+            "O arquivo já está aberto. Gostaria de abrí-lo novamente?", 
+            "ATENÇÃO", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) 
+            return true;
+        else {
+            resultArea.setMessageAreaText("Ação de abrir arquivo cancelada.");
+            return false;
         }
     }
 
-    public void copy() {
+    public void copyAction() {
         editorArea.getTextArea().copy();
     }
 
-    public void paste() {
+    public void pasteAction() {
         editorArea.getTextArea().paste();
     }
 
-    public void cut() {
+    public void cutAction() {
         editorArea.getTextArea().cut();
     }
 }

@@ -115,28 +115,28 @@ public class ToolbarMenu extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 switch (text) {
                     case "Novo":
-                        controller.newFile();
+                        controller.newFileAction();
                         break;
                     case "Abrir":
-                        controller.openFile();
+                        controller.openFileAction();
                         break;
                     case "Salvar":
-                        controller.saveFile();
+                        controller.saveFileAction();
                         break;
                     case "Copiar":
-                        controller.copy();
+                        controller.copyAction();
                         break;
                     case "Colar":
-                        controller.paste();
+                        controller.pasteAction();
                         break;
                     case "Cortar":
-                        controller.cut();
+                        controller.cutAction();
                         break;
                     case "Compilar":
-                        controller.compileProgram();
+                        controller.compileProgramAction();
                         break;
                     case "Equipe":
-                        controller.showTeamInfo();
+                        controller.showTeamInfoAction();
                         break;
                 }
             }
