@@ -1,4 +1,4 @@
-package com.pilador.model;
+package com.pilador.compilercore.constants;
 
 
 public interface ScannerConstants

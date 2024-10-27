@@ -1,12 +1,15 @@
-package com.pilador.model;
+package com.pilador.compilercore;
 
 import java.util.Arrays;
+
+import com.pilador.compilercore.constants.Constants;
+import com.pilador.compilercore.errors.LexicalError;
+import com.pilador.compilercore.utils.LineCalculator;
 
 public class Lexico implements Constants {
     private int position;
     private String input;
-
-    private String[] lines;
+    private LineCalculator lineCalculator;
 
     public Lexico() {
         this("");
@@ -14,7 +17,11 @@ public class Lexico implements Constants {
 
     public Lexico(String input) {
         setInput(input);
-        setLines(input);
+        this.lineCalculator = new LineCalculator(input);
+    }
+
+    public String getInput() {
+        return input;
     }
 
     public void setInput(String input) {
@@ -24,10 +31,6 @@ public class Lexico implements Constants {
 
     public void setPosition(int pos) {
         position = pos;
-    }
-
-    public void setLines(String input) {
-        lines = input.split("\n");
     }
 
     public Token nextToken() throws LexicalError {
@@ -57,8 +60,7 @@ public class Lexico implements Constants {
         }
 
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2))
-            throw new LexicalError(SCANNER_ERROR[lastState], getLine(start), getSymbolString(start));
-        // input.substring(start,position);
+            throw new LexicalError(SCANNER_ERROR[lastState], lineCalculator.getLine(start), getSymbolString(start));
 
         position = end;
 
@@ -71,7 +73,7 @@ public class Lexico implements Constants {
             token = lookupToken(token, lexeme);
 
             if ((token == 2) && !(Arrays.asList(SPECIAL_CASES_KEYS).contains(lexeme)))
-                throw new LexicalError(SCANNER_ERROR[1], getLine(start), getSymbolString(start));
+                throw new LexicalError(SCANNER_ERROR[1], lineCalculator.getLine(start), getSymbolString(start));
 
             return new Token(token, lexeme, start);
         }
@@ -143,20 +145,4 @@ public class Lexico implements Constants {
             return (char) -1;
     }
 
-    public int getLine(int tokenPosition) {
-        int charCount = 0;
-
-        int line = 0;
-
-        for (int i = 0; i < lines.length; i++) {
-            charCount += lines[i].length() + 1;
-            if (charCount > tokenPosition) {
-                line = i + 1;
-                break;
-            }
-        }
-
-        return line;
-
-    }
 }

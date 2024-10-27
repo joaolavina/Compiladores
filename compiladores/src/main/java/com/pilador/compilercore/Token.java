@@ -1,4 +1,6 @@
-package com.pilador.model;
+package com.pilador.compilercore;
+
+import com.pilador.compilercore.constants.Constants;
 
 public class Token {
     private int id;

@@ -5,13 +5,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.pilador.compilercore.CompilerMain;
 import com.pilador.model.FileHandler;
-import com.pilador.model.LexicalError;
-import com.pilador.model.Lexico;
-import com.pilador.model.SemanticError;
-import com.pilador.model.Semantico;
-import com.pilador.model.Sintatico;
-import com.pilador.model.SyntaticError;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -34,45 +29,20 @@ public class KeyEventController {
     }
 
     public void compileProgramAction() {
-        String text = editorArea.getEditorAreaText();
-        Lexico lexico = new Lexico(text);
-        Sintatico sintatico = new Sintatico();
-        Semantico semantico = new Semantico();
 
-        String message = "";
-
+        CompilerMain compiler = new CompilerMain();
+       
         try {
-            // Token t = null;
-            // ArrayList<Token> tokens = new ArrayList<>();
+            String text = editorArea.getEditorAreaText();
 
-            // while ((t = lexico.nextToken()) != null) {
-            //     tokens.add(t);
-            // }
+            String result = compiler.compile(text);
 
-            // message += "LINHA | CLASSE | LEXEMA\n";
+            resultArea.setMessageAreaText(result);
 
-            // for (int i = 0; i < tokens.size(); i++) {
-            //     Token tkn = tokens.get(i);
-            //     message += (tkn.toString() + "\n"); // trocar de novo depois para position = linha
-            // }
-
-            // System.out.println(message);
-
-            sintatico.parse(lexico, semantico);
-
-            message += "Programa compilado com sucesso";
-
-        } catch (LexicalError e) {
-            message = "Erro na linha " + e.getPosition() + " – " + e.getSymbol() + e.getMessage();
-        } catch (SyntaticError e) {
-            message = "Erro na linha " + e.getPosition() + " – " + e.getMessage();
-
-            // e.printStackTrace();
-        } catch (SemanticError e) {
-            // e.printStackTrace();
-        } finally {
-            resultArea.setMessageAreaText(message);
+        } catch (Exception e){
+            resultArea.setMessageAreaText(e.getMessage());
         }
+ 
     }
 
     public void showTeamInfoAction() {

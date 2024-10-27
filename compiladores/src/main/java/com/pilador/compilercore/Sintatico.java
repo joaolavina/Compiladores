@@ -1,6 +1,12 @@
-package com.pilador.model;
+package com.pilador.compilercore;
 
 import java.util.Stack;
+
+import com.pilador.compilercore.constants.Constants;
+import com.pilador.compilercore.errors.LexicalError;
+import com.pilador.compilercore.errors.SemanticError;
+import com.pilador.compilercore.errors.SyntaticError;
+import com.pilador.compilercore.utils.LineCalculator;
 
 public class Sintatico implements Constants
 {
@@ -9,6 +15,7 @@ public class Sintatico implements Constants
     private Token previousToken;
     private Lexico scanner;
     private Semantico semanticAnalyser;
+     private LineCalculator lineCalculator;
 
     private static final boolean isTerminal(int x)
     {
@@ -58,7 +65,7 @@ public class Sintatico implements Constants
             }
             else
             {
-                throw new SyntaticError(errorMessageConstructor(currentToken, x), scanner.getLine(currentToken.getPosition()));
+                throw new SyntaticError(errorMessageConstructor(currentToken, x), lineCalculator.getLine(currentToken.getPosition()));
             }
         }
         else if (isNonTerminal(x))
@@ -66,7 +73,7 @@ public class Sintatico implements Constants
             if (pushProduction(x, a))
                 return false;
             else
-                throw new SyntaticError(errorMessageConstructor(currentToken, x), scanner.getLine(currentToken.getPosition()));
+                throw new SyntaticError(errorMessageConstructor(currentToken, x), lineCalculator.getLine(currentToken.getPosition()));
         }
         else // isSemanticAction(x)
         {
@@ -101,7 +108,7 @@ public class Sintatico implements Constants
 
         switch (tokenId) {
             case 1:
-                message += "EOF ";
+                message += "EOF";
                 break;
             case 6:
                 message += "constante_string";
@@ -121,6 +128,7 @@ public class Sintatico implements Constants
     {
         this.scanner = scanner;
         this.semanticAnalyser = semanticAnalyser;
+        this.lineCalculator = new LineCalculator(scanner.getInput());
 
         stack.clear();
         stack.push(new Integer(DOLLAR));
