@@ -167,16 +167,16 @@ public interface ParserConstants
         "esperado identificador", // <lista_id> inválido
         "esperado ,  ;  =", // <opcao_id> inválido
         "esperado identificador  if  read  write  writeln  repeat", // <cmd> inválido
-        "esperado identificador  if read  write  writeln  repeat", // <lista_cmd> inválido
-        "esperado identificador  end  if  elif  else", // <opcao_cmd> inválido
+        "esperado identificador  if  read  write  writeln  repeat", // <lista_cmd> inválido
+        "esperado identificador  end  if  elif  else  read  wrtie  writeln  repeat  until  while", // <opcao_cmd> inválido
         "esperado identificador", // <atrib> inválido
         "esperado read", // <entrada> inválido
         "esperado identificador  constante_string", // <lista_entra> inválido
         "esperado identificador", // <opcao_entra> inválido
         "esperado ,  )", // <opcao_entra1> inválido
-        "esperado", // <saida> inválido
+        "esperado write  writeln", // <saida> inválido
         "esperado expressao", // <lista_expr> inválido
-        "esperado write  writeln", // <opcao_expr> inválido
+        "esperado ,  )", // <opcao_expr> inválido
         "esperado if", // <select> inválido
         "esperado end  elif  else", // <opcao_elif> inválido
         "esperado end  else", // <opcao_else> inválido
