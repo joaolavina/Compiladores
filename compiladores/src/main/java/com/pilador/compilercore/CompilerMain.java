@@ -39,7 +39,7 @@ public class CompilerMain {
         } catch (SyntaticError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getMessage());
         } catch (SemanticError e) {
-            // e.printStackTrace();
+            e.printStackTrace();
         }
 
         return message;
