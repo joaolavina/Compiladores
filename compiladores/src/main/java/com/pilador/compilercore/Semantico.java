@@ -24,42 +24,33 @@ public class Semantico implements Constants {
                 break;
             case 101:
                 semanticContext.handleProgramEnd();
+                generatedCodeToFile();
+                break;
+            case 107:
+                semanticContext.handleWriteLnCommand(token);
                 break;
             case 108:
                 semanticContext.handleWriteCommand(token);
+                break;
             case 123:
+                semanticContext.handleAddition(token);
+                break;
+            case 124:
+                semanticContext.handleSubtraction(token);
+                break;
+            case 125:
+                semanticContext.handleMultiplication(token);
+                break;
+            case 126:
+                semanticContext.handleDivision(token);
+                break;
             case 128:
+                semanticContext.handleIntExpression(token);
+                break;
             case 129:
                 break;
         }
-        
-        System.out.println(semanticContext.getCodigoObjeto());
 
-        /* switch (action) {
-	case 1: acao_semantica01 ();
-        case 2:
-	...
-	case 5: acao_semantica05 (token);
-	default -> mensagem ação ainda não implementada
-	}
-    }	
-
-    acao_semantica01 () {
-        tipo1 = pilha_tipos.pop()
-        tipo2 = pilha_tipos.pop()
-	// verificar se os tipos estão de acordo com a tabela de tipos
-	se tipos incomptíveis
-		gerar exceção
-	fimse
-	empilhar o tipo resultante
-        codigo.add("add")
-    }
-
-    acao_semantica05 (Token token) {
-	pilha_tipos.push ("int64");
-	codigo.add("ldc.i8 " + token.getLexeme())
-        codigo.add("conv.r8")
-    } */
     }
 
      private void generatedCodeToFile() {
@@ -74,7 +65,6 @@ public class Semantico implements Constants {
         File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
 
         try {
-            // Chama o método para salvar o código objeto gerado
             semanticContext.generatedCodeToFile(ilFile);
             System.out.println("Código objeto salvo em: " + ilFile.getAbsolutePath());
         } catch (IOException e) {

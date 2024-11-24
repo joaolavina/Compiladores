@@ -28,11 +28,19 @@ public class OCGenerator {
     }
 
     public void geraSaida(String tipo){
-        addCode("call void [mscorlib]System.Console::Write(<" + tipo + ">)");
+        addCode("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
     public void geraSaidaLinha(String tipo){
-        addCode("call void [mscorlib]System.Console::WriteLn(<" + tipo + ">)");
+        addCode("call void [mscorlib]System.Console::WriteLn(" + tipo + ")");
+    }
+
+    public void carregaInt(String nomeConstante) {
+        addCode("ldc.i8 " + nomeConstante);
+    }
+
+    public void carregaFloat(String nomeConstante) {
+        addCode("ldc.r8 " + nomeConstante);
     }
 
     public void carregaFalse () {
@@ -43,12 +51,28 @@ public class OCGenerator {
         addCode("ldc.i4.1");
     }
 
-    public void paraInt(String nomeVariavel) {
-        addCode("conv.i8 " + nomeVariavel);
+    public void paraInt() {
+        addCode("conv.i8");
     }
 
-    public void paraFloat(String nomeVariavel) {
-        addCode("conv.r8 " + nomeVariavel);
+    public void paraFloat() {
+        addCode("conv.r8");
+    }
+
+    public void adicao() {
+        addCode("add");
+    }
+
+    public void subtracao() {
+        addCode("sub");
+    }
+
+    public void multiplicacao() {
+        addCode("mul");
+    }
+
+    public void divisao() {
+        addCode("div");
     }
 
 }
