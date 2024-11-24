@@ -1,31 +1,39 @@
 package com.pilador.compilercore;
 
-import java.util.ArrayList;
-import java.util.Stack;
+import java.io.File;
+import java.io.IOException;
 
 import com.pilador.compilercore.constants.Constants;
 import com.pilador.compilercore.errors.SemanticError;
 
 public class Semantico implements Constants {
 
-    String operadorRelacional; // operador relacional reconhecido pela ação #121, para uso posterior na ação #122
-    String codigoObjeto; // armazenar o código objeto gerado
-    Stack<String> pilhaTipos; // determinar o tipo de uma expressão durante a compilação do programa
-    Stack<String> pilhaRotulos; // análise dos comandos de seleção e de repetição
-    ArrayList<Identifier> listaIdentificadores; // armazenar os identificadores reconhecidos pela ação #104, para uso posterior nas ações #102 a #103
-    ArrayList<String> tabelaSimbolos; // armazenar os identificadores declarados (variáveis, ação #102). Cada linha da tabela tem um campo: o identificador da variável declarada 
+    private SemanticContext semanticContext;
 
-
+    public Semantico () {
+        this.semanticContext = new SemanticContext();
+    }
+  
     public void executeAction(int action, Token token)	throws SemanticError {
 
-        System.out.println("Ação #"+action+", Token: "+token);
+        System.out.println("Ação #"+action+", Token: "+ token);
 
         switch (action) {
             case 100:
-                System.out.println("a");
+                semanticContext.handleProgramHeader();
+                break;
+            case 101:
+                semanticContext.handleProgramEnd();
+                break;
+            case 108:
+                semanticContext.handleWriteCommand(token);
+            case 123:
+            case 128:
+            case 129:
+                break;
         }
         
-
+        System.out.println(semanticContext.getCodigoObjeto());
 
         /* switch (action) {
 	case 1: acao_semantica01 ();
@@ -52,6 +60,26 @@ public class Semantico implements Constants {
 	codigo.add("ldc.i8 " + token.getLexeme())
         codigo.add("conv.r8")
     } */
+    }
+
+     private void generatedCodeToFile() {
+        //String currentDir = Paths.get("").toAbsolutePath().toString();
+
+        String currentDir = System.getProperty("user.dir");
+        File sourceFile = new File(currentDir);
+
+        String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");
+
+      
+        File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
+
+        try {
+            // Chama o método para salvar o código objeto gerado
+            semanticContext.generatedCodeToFile(ilFile);
+            System.out.println("Código objeto salvo em: " + ilFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar o código objeto: " + e.getMessage());
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.pilador.compilercore;
 
 public class Identifier {
+    
     private String name;
     private String typeString;
     private boolean declared;
