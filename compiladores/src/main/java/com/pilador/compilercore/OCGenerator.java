@@ -1,10 +1,10 @@
 package com.pilador.compilercore;
 
 public class OCGenerator {
-    
+
     private StringBuilder codigoObjeto = new StringBuilder();
 
-    public String getCodigoObjeto () {
+    public String getCodigoObjeto() {
         return codigoObjeto.toString();
     }
 
@@ -21,33 +21,37 @@ public class OCGenerator {
         addCode(".entrypoint");
     }
 
-    public void geraRodape(){
+    public void geraRodape() {
         addCode("ret");
         addCode("}");
         addCode("}");
     }
 
-    public void geraSaida(String tipo){
+    public void geraSaida(String tipo) {
         addCode("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
-    public void geraSaidaLinha(String tipo){
+    public void geraSaidaLinha(String tipo) {
         addCode("call void [mscorlib]System.Console::WriteLn(" + tipo + ")");
     }
 
-    public void carregaInt(String nomeConstante) {
-        addCode("ldc.i8 " + nomeConstante);
+    public void carregaInt(String valorConstante) {
+        addCode("ldc.i8 " + valorConstante);
     }
 
-    public void carregaFloat(String nomeConstante) {
-        addCode("ldc.r8 " + nomeConstante);
+    public void carregaFloat(String valorConstante) {
+        addCode("ldc.r8 " + valorConstante);
     }
 
-    public void carregaFalse () {
+    public void carregaString(String valorConstante) {
+        addCode("ldstr " + valorConstante);
+    }
+
+    public void carregaFalse() {
         addCode("ldc.i4.0");
     }
 
-    public void carregaTrue () {
+    public void carregaTrue() {
         addCode("ldc.i4.1");
     }
 
@@ -73,6 +77,24 @@ public class OCGenerator {
 
     public void divisao() {
         addCode("div");
+    }
+
+    public void igualA() {
+        addCode("ceq");
+    }
+
+    public void menorQue() {
+        addCode("clt");
+    }
+
+    public void maiorQue() {
+        addCode("cgt");
+    }
+
+    public void diferenteDe() {
+        addCode("ceq");
+        carregaFalse();
+        igualA();
     }
 
 }

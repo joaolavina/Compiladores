@@ -32,6 +32,16 @@ public class Semantico implements Constants {
             case 108:
                 semanticContext.handleWriteCommand(token);
                 break;
+            case 118:
+            case 119:
+                semanticContext.handleBoolean(token);
+                break;
+            case 121:
+                semanticContext.handleRelationalOperator(token);
+                break;
+            case 122:
+                semanticContext.handleRelationalOperation(token);
+                break;
             case 123:
                 semanticContext.handleAddition(token);
                 break;
@@ -48,6 +58,13 @@ public class Semantico implements Constants {
                 semanticContext.handleIntExpression(token);
                 break;
             case 129:
+                semanticContext.handleFloatExpression(token);
+                break;
+            case 130:
+                semanticContext.handleStringExpression(token);
+                break;
+            case 131:
+                semanticContext.handleNegativeExpression(token);
                 break;
         }
 
