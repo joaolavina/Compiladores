@@ -1,57 +1,75 @@
 package com.pilador.compilercore;
 
-import java.util.ArrayList;
-import java.util.Stack;
+import java.io.File;
+import java.io.IOException;
 
 import com.pilador.compilercore.constants.Constants;
 import com.pilador.compilercore.errors.SemanticError;
 
 public class Semantico implements Constants {
 
-    String operadorRelacional; // operador relacional reconhecido pela ação #121, para uso posterior na ação #122
-    String codigoObjeto; // armazenar o código objeto gerado
-    Stack<String> pilhaTipos; // determinar o tipo de uma expressão durante a compilação do programa
-    Stack<String> pilhaRotulos; // análise dos comandos de seleção e de repetição
-    ArrayList<Identifier> listaIdentificadores; // armazenar os identificadores reconhecidos pela ação #104, para uso posterior nas ações #102 a #103
-    ArrayList<String> tabelaSimbolos; // armazenar os identificadores declarados (variáveis, ação #102). Cada linha da tabela tem um campo: o identificador da variável declarada 
+    private SemanticContext semanticContext;
 
-
+    public Semantico () {
+        this.semanticContext = new SemanticContext();
+    }
+  
     public void executeAction(int action, Token token)	throws SemanticError {
 
-        System.out.println("Ação #"+action+", Token: "+token);
+        System.out.println("Ação #"+action+", Token: "+ token);
 
         switch (action) {
             case 100:
-                System.out.println("a");
+                semanticContext.handleProgramHeader();
+                break;
+            case 101:
+                semanticContext.handleProgramEnd();
+                generatedCodeToFile();
+                break;
+            case 107:
+                semanticContext.handleWriteLnCommand(token);
+                break;
+            case 108:
+                semanticContext.handleWriteCommand(token);
+                break;
+            case 123:
+                semanticContext.handleAddition(token);
+                break;
+            case 124:
+                semanticContext.handleSubtraction(token);
+                break;
+            case 125:
+                semanticContext.handleMultiplication(token);
+                break;
+            case 126:
+                semanticContext.handleDivision(token);
+                break;
+            case 128:
+                semanticContext.handleIntExpression(token);
+                break;
+            case 129:
+                break;
         }
-        
 
-
-        /* switch (action) {
-	case 1: acao_semantica01 ();
-        case 2:
-	...
-	case 5: acao_semantica05 (token);
-	default -> mensagem ação ainda não implementada
-	}
-    }	
-
-    acao_semantica01 () {
-        tipo1 = pilha_tipos.pop()
-        tipo2 = pilha_tipos.pop()
-	// verificar se os tipos estão de acordo com a tabela de tipos
-	se tipos incomptíveis
-		gerar exceção
-	fimse
-	empilhar o tipo resultante
-        codigo.add("add")
     }
 
-    acao_semantica05 (Token token) {
-	pilha_tipos.push ("int64");
-	codigo.add("ldc.i8 " + token.getLexeme())
-        codigo.add("conv.r8")
-    } */
+     private void generatedCodeToFile() {
+        //String currentDir = Paths.get("").toAbsolutePath().toString();
+
+        String currentDir = System.getProperty("user.dir");
+        File sourceFile = new File(currentDir);
+
+        String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");
+
+      
+        File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
+
+        try {
+            semanticContext.generatedCodeToFile(ilFile);
+            System.out.println("Código objeto salvo em: " + ilFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar o código objeto: " + e.getMessage());
+        }
     }
 
 }
