@@ -10,13 +10,13 @@ public class Semantico implements Constants {
 
     private SemanticContext semanticContext;
 
-    public Semantico () {
+    public Semantico() {
         this.semanticContext = new SemanticContext();
     }
-  
-    public void executeAction(int action, Token token)	throws SemanticError {
 
-        System.out.println("Ação #"+action+", Token: "+ token);
+    public void executeAction(int action, Token token) throws SemanticError {
+
+        System.out.println("Ação #" + action + ", Token: " + token);
 
         switch (action) {
             case 100:
@@ -32,9 +32,18 @@ public class Semantico implements Constants {
             case 108:
                 semanticContext.handleWriteCommand(token);
                 break;
+            case 116:
+                semanticContext.handleAndOperator(token); // !!
+                break;
+            case 117:
+                semanticContext.handleOrOperator(token); // !!
+                break;
             case 118:
             case 119:
                 semanticContext.handleBoolean(token);
+                break;
+            case 120:
+                semanticContext.handleNotOperator(token); // !!
                 break;
             case 121:
                 semanticContext.handleRelationalOperator(token);
@@ -54,6 +63,9 @@ public class Semantico implements Constants {
             case 126:
                 semanticContext.handleDivision(token);
                 break;
+            case 127:
+                semanticContext.handleIdentifier(token);
+                break;
             case 128:
                 semanticContext.handleIntExpression(token);
                 break;
@@ -70,15 +82,14 @@ public class Semantico implements Constants {
 
     }
 
-     private void generatedCodeToFile() {
-        //String currentDir = Paths.get("").toAbsolutePath().toString();
+    private void generatedCodeToFile() {
+        // String currentDir = Paths.get("").toAbsolutePath().toString();
 
         String currentDir = System.getProperty("user.dir");
         File sourceFile = new File(currentDir);
 
         String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");
 
-      
         File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
 
         try {

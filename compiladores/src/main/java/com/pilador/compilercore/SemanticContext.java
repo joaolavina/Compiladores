@@ -55,6 +55,34 @@ public class SemanticContext {
         ocGenerator.geraSaida(tipoDesemp.getName());
     }
 
+    public void handleAndOperator(Token token) { // !! #116
+        ExpressionType tipoDesemp1 = pilhaTipos.pop();
+        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+
+        if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
+            throw new IllegalArgumentException(
+                    "Operação relacional inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+
+        pilhaTipos.push(ExpressionType.BOOL);
+
+        ocGenerator.and();
+    }
+    
+    public void handleOrOperator(Token token) { // !! #117
+        ExpressionType tipoDesemp1 = pilhaTipos.pop();
+        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+
+        if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
+            throw new IllegalArgumentException(
+                    "Operação relacional inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+
+        pilhaTipos.push(ExpressionType.BOOL);
+
+        ocGenerator.or();
+    }
+
+    // !! Como a gente não armazena os operadores lógicos binários em alguma varíavel, tem que fazer 2 métodos diferentes, paia né
+
     public void handleBoolean(Token token) { // #118 e #119
         pilhaTipos.push(ExpressionType.BOOL);
 
@@ -64,6 +92,10 @@ public class SemanticContext {
             ocGenerator.carregaTrue();
         else
             ocGenerator.carregaFalse();
+    }
+
+    public void handleNotOperator(Token token) { // !! #120
+        ocGenerator.not();
     }
 
     public void handleRelationalOperator(Token token) { // #121
@@ -166,6 +198,33 @@ public class SemanticContext {
         ExpressionType tipoResultante = ExpressionType.FLOAT64;
         pilhaTipos.push(tipoResultante);
         ocGenerator.divisao();
+    }
+
+    public void handleIdentifier(Token token){ // !! #127
+        if(tabelaSimbolos.containsKey(token.getLexeme())){
+            throw new IllegalArgumentException("Linha " + token.getPosition() + ": " + token.getLexeme() + " não declarado");
+        } else{
+            String prefix = token.getLexeme().substring(0, 1);
+            switch (prefix) {
+                case "i_":
+                    pilhaTipos.push(ExpressionType.INT64);
+                    break;
+                case "f_":
+                    pilhaTipos.push(ExpressionType.FLOAT64);
+                    break;
+                case "s_":
+                    pilhaTipos.push(ExpressionType.STRING);
+                    break;
+                case "b_":
+                    pilhaTipos.push(ExpressionType.BOOL);
+                    break;
+            }
+
+            ocGenerator.getValorVariavel(token.getLexeme());
+
+            if(prefix == "i_")
+                ocGenerator.paraFloat();
+        }
     }
 
     public void handleIntExpression(Token token) { // #128

@@ -97,4 +97,22 @@ public class OCGenerator {
         igualA();
     }
 
+    // !! FIZ ISSO AQUI EMBAIXO
+
+    public void not() {
+        carregaTrue();
+        addCode("xor");
+    }
+
+    public void and() {
+        addCode("and");
+    }
+
+    public void or() {
+        addCode("or");
+    }
+
+    public void getValorVariavel(String nomeVariavel){
+        addCode("ldcloc " + nomeVariavel);
+    }
 }
