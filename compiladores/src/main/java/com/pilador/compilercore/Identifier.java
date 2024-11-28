@@ -6,6 +6,10 @@ public class Identifier {
     private String typeString;
     private boolean declared;
     
+    public Identifier(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

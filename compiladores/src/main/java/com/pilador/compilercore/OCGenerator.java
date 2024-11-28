@@ -112,7 +112,11 @@ public class OCGenerator {
         addCode("or");
     }
 
-    public void getValorVariavel(String nomeVariavel){
+    public void getValorVariavel(String nomeVariavel) {
         addCode("ldcloc " + nomeVariavel);
+    }
+
+    public void declararVariáveis(String variaveis) {
+        addCode(".locals (" + variaveis + ")");
     }
 }

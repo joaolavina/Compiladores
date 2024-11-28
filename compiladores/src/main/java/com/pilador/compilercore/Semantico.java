@@ -26,6 +26,12 @@ public class Semantico implements Constants {
                 semanticContext.handleProgramEnd();
                 generatedCodeToFile();
                 break;
+            case 102:
+                semanticContext.handleIdentifierDeclaration(token);
+                break;
+            case 104:
+                semanticContext.handleStoreIdentifier(token);
+                break;
             case 107:
                 semanticContext.handleWriteLnCommand(token);
                 break;

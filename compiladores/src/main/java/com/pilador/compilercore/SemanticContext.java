@@ -17,15 +17,16 @@ public class SemanticContext {
     Stack<String> pilhaRotulos; // análise dos comandos de seleção e de repetição
     List<Identifier> listaIdentificadores; // armazenar os identificadores reconhecidos pela ação #104, para uso
                                            // posterior nas ações #102 a #103
-    Map<String, String> tabelaSimbolos; // armazenar os identificadores declarados (variáveis, ação #102). Cada linha da
-                                        // tabela tem um campo: o identificador da variável declarada
+    Map<String, Identifier> tabelaSimbolos; // armazenar os identificadores declarados (variáveis, ação #102). Cada
+                                            // linha da
+    // tabela tem um campo: o identificador da variável declarada
     private OCGenerator ocGenerator; // armazenar o código objeto gerado
 
     public SemanticContext() {
         this.pilhaTipos = new Stack<ExpressionType>();
         this.pilhaRotulos = new Stack<String>();
         this.listaIdentificadores = new ArrayList<Identifier>();
-        this.tabelaSimbolos = new HashMap<String, String>();
+        this.tabelaSimbolos = new HashMap<String, Identifier>();
         this.ocGenerator = new OCGenerator();
     }
 
@@ -35,6 +36,52 @@ public class SemanticContext {
 
     public void handleProgramEnd() { // #101
         ocGenerator.geraRodape();
+    }
+
+    public void handleIdentifierDeclaration(Token token) { // !! #102
+        String ilDeclaration = "";
+
+        for (int i = 0; i < listaIdentificadores.size(); i++) {
+            Identifier id = listaIdentificadores.get(i);
+            if (tabelaSimbolos.containsKey(id.getName())) {
+                throw new IllegalArgumentException(
+                        "Linha " + token.getPosition() + ": " + id.getName() + " já declarado");
+            } else {
+                // ? aqui n sei se era essa forma q vc tinha pensado, mas resolvi assim
+                // ? talvez tenha uma forma melhor, mas pelo menos funciona
+                // ? acho que o atributo 'declared' de Identifier não precisa ter, é só chegar se ta ou não no map
+                String tipo = "";
+                String teste = getPrefixIdentifier(id.getName());
+                switch (teste) { 
+                    case "i_":
+                        tipo = "int64";
+                        break;
+                    case "f_":
+                        tipo = "float64";
+                        break;
+                    case "s_":
+                        tipo = "string";
+                        break;
+                    case "b_":
+                        tipo = "bool";
+                        break;
+                }
+
+                id.setTypeString(tipo);
+                tabelaSimbolos.put(id.getName(), id);
+
+                if (ilDeclaration != "")
+                    ilDeclaration += ", ";
+
+                ilDeclaration += id.getTypeString() + " " + id.getName();
+            }
+        }
+
+        ocGenerator.declararVariáveis(ilDeclaration);
+    }
+
+    public void handleStoreIdentifier(Token token) { // !! #104
+        listaIdentificadores.add(new Identifier(token.getLexeme()));
     }
 
     public void handleWriteLnCommand(Token token) { // #107
@@ -67,7 +114,7 @@ public class SemanticContext {
 
         ocGenerator.and();
     }
-    
+
     public void handleOrOperator(Token token) { // !! #117
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
@@ -81,7 +128,8 @@ public class SemanticContext {
         ocGenerator.or();
     }
 
-    // !! Como a gente não armazena os operadores lógicos binários em alguma varíavel, tem que fazer 2 métodos diferentes, paia né
+    // !! Como a gente não armazena os operadores lógicos binários em alguma
+    // varíavel, tem que fazer 2 métodos diferentes, paia né
 
     public void handleBoolean(Token token) { // #118 e #119
         pilhaTipos.push(ExpressionType.BOOL);
@@ -200,11 +248,12 @@ public class SemanticContext {
         ocGenerator.divisao();
     }
 
-    public void handleIdentifier(Token token){ // !! #127
-        if(tabelaSimbolos.containsKey(token.getLexeme())){
-            throw new IllegalArgumentException("Linha " + token.getPosition() + ": " + token.getLexeme() + " não declarado");
-        } else{
-            String prefix = token.getLexeme().substring(0, 1);
+    public void handleIdentifier(Token token) { // !! #127
+        if (tabelaSimbolos.containsKey(token.getLexeme())) {
+            throw new IllegalArgumentException(
+                    "Linha " + token.getPosition() + ": " + token.getLexeme() + " não declarado");
+        } else {
+            String prefix = getPrefixIdentifier(token.getLexeme());
             switch (prefix) {
                 case "i_":
                     pilhaTipos.push(ExpressionType.INT64);
@@ -222,7 +271,7 @@ public class SemanticContext {
 
             ocGenerator.getValorVariavel(token.getLexeme());
 
-            if(prefix == "i_")
+            if (prefix == "i_")
                 ocGenerator.paraFloat();
         }
     }
@@ -275,4 +324,9 @@ public class SemanticContext {
         return ocGenerator.getCodigoObjeto();
     }
 
+    // !! método pra extrair o prefixo identificador
+
+    private String getPrefixIdentifier(String string) {
+        return string.substring(0, 2);
+    }
 }
