@@ -49,10 +49,11 @@ public class SemanticContext {
             } else {
                 // ? aqui n sei se era essa forma q vc tinha pensado, mas resolvi assim
                 // ? talvez tenha uma forma melhor, mas pelo menos funciona
-                // ? acho que o atributo 'declared' de Identifier não precisa ter, é só chegar se ta ou não no map
+                // ? acho que o atributo 'declared' de Identifier não precisa ter, é só chegar
+                // se ta ou não no map
                 String tipo = "";
                 String teste = getPrefixIdentifier(id.getName());
-                switch (teste) { 
+                switch (teste) {
                     case "i_":
                         tipo = "int64";
                         break;
@@ -78,7 +79,41 @@ public class SemanticContext {
         }
 
         ocGenerator.declararVariáveis(ilDeclaration);
+        listaIdentificadores.removeAll(listaIdentificadores);
     }
+
+    public void handleAtributionExpression(Token token) { // !! #103
+        ExpressionType tipoDesemp = pilhaTipos.pop();
+
+        if (tipoDesemp == ExpressionType.INT64)
+            ocGenerator.paraInt();
+
+        for (int i = 0; i <= listaIdentificadores.size() - 1; i++) {
+            ocGenerator.duplicar();
+        }
+
+        for (Identifier identifier : listaIdentificadores) {
+            if (!tabelaSimbolos.containsKey(identifier.getName())) {
+                throw new IllegalArgumentException(
+                        "Linha " + token.getPosition() + ": " + identifier.getName() + "não declarado");
+            } else {
+                ocGenerator.setValorVariavel(identifier.getName());
+            }
+        }
+
+        listaIdentificadores.removeAll(listaIdentificadores);
+    }
+
+    /*
+     * 
+     * main
+     *      i_integer;
+     *      i_integer = 3;
+     *      write(i_integer);
+     * end
+     * 
+     * esse código não compila, diz q a variavel n foi declarada, hm, tem q ver isso dps
+     */
 
     public void handleStoreIdentifier(Token token) { // !! #104
         listaIdentificadores.add(new Identifier(token.getLexeme()));

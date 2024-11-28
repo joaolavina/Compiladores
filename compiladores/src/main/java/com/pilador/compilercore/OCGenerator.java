@@ -119,4 +119,12 @@ public class OCGenerator {
     public void declararVariáveis(String variaveis) {
         addCode(".locals (" + variaveis + ")");
     }
+
+    public void duplicar(){
+        addCode("dup");
+    }
+
+    public void setValorVariavel(String nomeVariavel){
+        addCode("stloc " + nomeVariavel);
+    }
 }

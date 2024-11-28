@@ -29,6 +29,9 @@ public class Semantico implements Constants {
             case 102:
                 semanticContext.handleIdentifierDeclaration(token);
                 break;
+            case 103:
+                semanticContext.handleAtributionExpression(token);
+                break;
             case 104:
                 semanticContext.handleStoreIdentifier(token);
                 break;
