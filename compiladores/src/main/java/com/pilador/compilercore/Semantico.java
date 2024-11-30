@@ -35,6 +35,9 @@ public class Semantico implements Constants {
             case 104:
                 semanticContext.handleStoreIdentifier(token);
                 break;
+            case 105:
+                semanticContext.handleReadAttribution(token);
+                break;
             case 106:
                 semanticContext.handleReadCommand(token);
                 break;
@@ -43,6 +46,27 @@ public class Semantico implements Constants {
                 break;
             case 108:
                 semanticContext.handleWriteCommand(token);
+                break;
+            case 109:
+                semanticContext.handleIfExpression(token);
+                break;
+            case 110:
+                semanticContext.handleElifExpression(token);
+                break;
+            case 111:
+                semanticContext.handleElseExpression(token);
+                break;
+            case 112:
+                semanticContext.handleElifBreakExpression(token);
+                break;
+            case 113:
+                semanticContext.handleRepeatExpression(token);
+                break;
+            case 114:
+                semanticContext.handleWhileExpression(token);
+                break;
+            case 115:
+                semanticContext.handleUntilExpression(token);
                 break;
             case 116:
                 semanticContext.handleAndOperator(token); 

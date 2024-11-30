@@ -118,13 +118,26 @@ public class OCGenerator {
         addCode(".locals (" + variaveis + ")");
     }
 
-    public void duplicar(){
+    public void duplicar() {
         addCode("dup");
     }
 
-    public void armazenaValorVariavel(String nomeVariavel){
+    public void armazenaValorVariavel(String nomeVariavel) {
         addCode("stloc " + nomeVariavel);
     }
 
-    // public void leString();
+    public void geraEntrada() {
+        addCode("call string [mscorlib]System.Console::ReadLine()");
+    }
+
+    public void converteEntrada(ExpressionType type) {
+        addCode("call" + type.getName() + "[mscorlib]System." + type.getClassName() +"::Parse(string)");
+    }
+
+    public void criarRotulo(String rotulo){
+        addCode(rotulo + ":");
+    }
+    public void pularParaRotulo(String condicao, String rotulo){
+        addCode("br" + condicao + " " + rotulo);
+    }
 }

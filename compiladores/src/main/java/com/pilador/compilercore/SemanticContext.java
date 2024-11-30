@@ -22,12 +22,16 @@ public class SemanticContext {
     // tabela tem um campo: o identificador da variável declarada
     private OCGenerator ocGenerator; // armazenar o código objeto gerado
 
+    private int indexRotulo; // indexador para a nomeação dos rótulos
+
     public SemanticContext() {
         this.pilhaTipos = new Stack<ExpressionType>();
         this.pilhaRotulos = new Stack<String>();
         this.listaIdentificadores = new ArrayList<Identifier>();
         this.tabelaSimbolos = new HashMap<String, Identifier>();
         this.ocGenerator = new OCGenerator();
+
+        indexRotulo = 0;
     }
 
     public void handleProgramHeader() { // #100
@@ -101,20 +105,8 @@ public class SemanticContext {
 
         listaIdentificadores.removeAll(listaIdentificadores);
     }
-
-    /*
-     * 
-     * main
-     * i_integer;
-     * i_integer = 3;
-     * write(i_integer);
-     * end
-     * 
-     * esse código não compila, diz q a variavel n foi declarada, hm, tem q ver isso
-     * dps
-     */
-
     public void handleStoreIdentifier(Token token) { // #104
+        listaIdentificadores.add(new Identifier(token.getLexeme()));
     }
 
     public void handleReadAttribution(Token token) { // #105
@@ -124,26 +116,30 @@ public class SemanticContext {
         } else {
             Identifier id = tabelaSimbolos.get(token.getLexeme());
             String prefix = getPrefixIdentifier(id.getName());
+
             ExpressionType type = null;
-            switch (prefix) {
-                case "i_":
-                    type = ExpressionType.INT64;
-                    break;
-                case "f_":
-                    type = ExpressionType.FLOAT64;
-                    break;
-                case "s_":
-                    type = ExpressionType.STRING;
-                    break;
-                case "b_":
-                    type = ExpressionType.BOOL;
-                    break;
+
+            ocGenerator.geraEntrada();
+            if (!prefix.equals("s_")) {
+                switch (prefix) {
+                    case "i_":
+                        type = ExpressionType.INT64;
+                        break;
+                    case "f_":
+                        type = ExpressionType.FLOAT64;
+                        break;
+                    case "b_":
+                        type = ExpressionType.BOOL;
+                        break;
+                }
+
+                ocGenerator.converteEntrada(type);
             }
+
+            ocGenerator.carregaValorVariavel(id.getName());
         }
     }
 
-    // Eu quero bolo, quando digo bolo, digo cuca
-    // Bolo, quando digo bolo digo digo
     public void handleReadCommand(Token token) { // #106
         ocGenerator.carregaString(token.getLexeme());
         ocGenerator.geraSaida(ExpressionType.STRING.getName());
@@ -165,6 +161,56 @@ public class SemanticContext {
             ocGenerator.paraInt();
 
         ocGenerator.geraSaida(tipoDesemp.getName());
+    }
+
+    public void handleIfExpression(Token token){ // #109
+        String novoRotulo1 = "L" + indexRotulo;
+        indexRotulo++;
+        pilhaRotulos.push(novoRotulo1);
+        
+        String novoRotulo2 = "L" + indexRotulo;
+        indexRotulo++;
+        ocGenerator.pularParaRotulo("false", novoRotulo2);
+        pilhaRotulos.push(novoRotulo2);
+    }
+
+    public void handleElifExpression(Token token){ // #110
+        String rotuloDesempilhado2 = pilhaRotulos.pop();
+        String rotuloDesempilhado1 = pilhaRotulos.pop();
+
+        ocGenerator.pularParaRotulo("", rotuloDesempilhado1);
+        pilhaRotulos.push(rotuloDesempilhado1);
+        ocGenerator.criarRotulo(rotuloDesempilhado2);
+    }
+
+    public void handleElseExpression(Token token){ // #111
+        String rotuloDesempilhado = pilhaRotulos.pop();
+        ocGenerator.criarRotulo(rotuloDesempilhado);
+    }
+
+    public void handleElifBreakExpression(Token token){ // #112
+        String novoRotulo = "L" + indexRotulo;
+        indexRotulo++;
+
+        ocGenerator.pularParaRotulo("false", novoRotulo);
+        pilhaRotulos.push(novoRotulo);
+    }
+
+    public void handleRepeatExpression(Token token){ // #113
+        String novoRotulo = "L" + indexRotulo;
+        indexRotulo++;
+        ocGenerator.criarRotulo(novoRotulo);
+        pilhaRotulos.push(novoRotulo);
+    }
+
+    public void handleWhileExpression(Token token) { // #114
+        String rotuloDesempilhado = pilhaRotulos.pop();
+        ocGenerator.pularParaRotulo("true", rotuloDesempilhado);
+    }
+
+    public void handleUntilExpression(Token token){ // #115
+        String rotuloDesempilhado = pilhaRotulos.pop();
+        ocGenerator.pularParaRotulo("false", rotuloDesempilhado);
     }
 
     public void handleAndOperator(Token token) { // #116
