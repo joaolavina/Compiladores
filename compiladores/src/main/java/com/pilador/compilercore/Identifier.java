@@ -3,8 +3,7 @@ package com.pilador.compilercore;
 public class Identifier {
     
     private String name;
-    private String typeString;
-    private boolean declared;
+    private ExpressionType type;
     
     public Identifier(String name) {
         this.name = name;
@@ -16,16 +15,11 @@ public class Identifier {
     public void setName(String name) {
         this.name = name;
     }
-    public String getTypeString() {
-        return typeString;
+    public ExpressionType getType() {
+        return type;
     }
-    public void setTypeString(String typeString) {
-        this.typeString = typeString;
+    public void setType(ExpressionType type) {
+        this.type = type;
     }
-    public boolean isDeclared() {
-        return declared;
-    }
-    public void setDeclared(boolean declared) {
-        this.declared = declared;
-    }
+
 }

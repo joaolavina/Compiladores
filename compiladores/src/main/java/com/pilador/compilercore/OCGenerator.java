@@ -97,8 +97,6 @@ public class OCGenerator {
         igualA();
     }
 
-    // !! FIZ ISSO AQUI EMBAIXO
-
     public void not() {
         carregaTrue();
         addCode("xor");
@@ -112,8 +110,8 @@ public class OCGenerator {
         addCode("or");
     }
 
-    public void getValorVariavel(String nomeVariavel) {
-        addCode("ldcloc " + nomeVariavel);
+    public void carregaValorVariavel(String nomeVariavel) {
+        addCode("ldloc " + nomeVariavel);
     }
 
     public void declararVariáveis(String variaveis) {
@@ -124,7 +122,9 @@ public class OCGenerator {
         addCode("dup");
     }
 
-    public void setValorVariavel(String nomeVariavel){
+    public void armazenaValorVariavel(String nomeVariavel){
         addCode("stloc " + nomeVariavel);
     }
+
+    // public void leString();
 }
