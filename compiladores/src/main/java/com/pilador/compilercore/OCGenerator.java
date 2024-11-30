@@ -16,6 +16,7 @@ public class OCGenerator {
         addCode(".assembly extern mscorlib {}");
         addCode(".assembly _codigo_objeto{}");
         addCode(".module _codigo_objeto.exe");
+        addCode("");
         addCode(".class public " + nomeClasse + "{");
         addCode(".method static public void _principal() {");
         addCode(".entrypoint");
@@ -114,11 +115,11 @@ public class OCGenerator {
         addCode("ldloc " + nomeVariavel);
     }
 
-    public void declararVariáveis(String variaveis) {
+    public void declaraVariaveis(String variaveis) {
         addCode(".locals (" + variaveis + ")");
     }
 
-    public void duplicar() {
+    public void duplica() {
         addCode("dup");
     }
 
@@ -131,13 +132,14 @@ public class OCGenerator {
     }
 
     public void converteEntrada(ExpressionType type) {
-        addCode("call" + type.getName() + "[mscorlib]System." + type.getClassName() +"::Parse(string)");
+        addCode("call " + type.getName() + " [mscorlib]System." + type.getClassName() +"::Parse(string)");
     }
 
-    public void criarRotulo(String rotulo){
+    public void criaRotulo(String rotulo){
         addCode(rotulo + ":");
     }
-    public void pularParaRotulo(String condicao, String rotulo){
+
+    public void pulaParaRotulo(String condicao, String rotulo){
         addCode("br" + condicao + " " + rotulo);
     }
 }

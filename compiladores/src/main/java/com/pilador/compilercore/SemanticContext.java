@@ -78,7 +78,7 @@ public class SemanticContext {
             }
         }
 
-        ocGenerator.declararVariáveis(ilDeclaration);
+        ocGenerator.declaraVariaveis(ilDeclaration);
         listaIdentificadores.removeAll(listaIdentificadores);
     }
 
@@ -89,7 +89,7 @@ public class SemanticContext {
             ocGenerator.paraInt();
 
         for (int i = 0; i < listaIdentificadores.size() - 1; i++) {
-            ocGenerator.duplicar();
+            ocGenerator.duplica();
         }
 
         for (Identifier identifier : listaIdentificadores) {
@@ -136,7 +136,7 @@ public class SemanticContext {
                 ocGenerator.converteEntrada(type);
             }
 
-            ocGenerator.carregaValorVariavel(id.getName());
+            ocGenerator.armazenaValorVariavel(id.getName());
         }
     }
 
@@ -170,7 +170,7 @@ public class SemanticContext {
         
         String novoRotulo2 = "L" + indexRotulo;
         indexRotulo++;
-        ocGenerator.pularParaRotulo("false", novoRotulo2);
+        ocGenerator.pulaParaRotulo("false", novoRotulo2);
         pilhaRotulos.push(novoRotulo2);
     }
 
@@ -178,39 +178,39 @@ public class SemanticContext {
         String rotuloDesempilhado2 = pilhaRotulos.pop();
         String rotuloDesempilhado1 = pilhaRotulos.pop();
 
-        ocGenerator.pularParaRotulo("", rotuloDesempilhado1);
+        ocGenerator.pulaParaRotulo("", rotuloDesempilhado1);
         pilhaRotulos.push(rotuloDesempilhado1);
-        ocGenerator.criarRotulo(rotuloDesempilhado2);
+        ocGenerator.criaRotulo(rotuloDesempilhado2);
     }
 
     public void handleElseExpression(Token token){ // #111
         String rotuloDesempilhado = pilhaRotulos.pop();
-        ocGenerator.criarRotulo(rotuloDesempilhado);
+        ocGenerator.criaRotulo(rotuloDesempilhado);
     }
 
     public void handleElifBreakExpression(Token token){ // #112
         String novoRotulo = "L" + indexRotulo;
         indexRotulo++;
 
-        ocGenerator.pularParaRotulo("false", novoRotulo);
+        ocGenerator.pulaParaRotulo("false", novoRotulo);
         pilhaRotulos.push(novoRotulo);
     }
 
     public void handleRepeatExpression(Token token){ // #113
         String novoRotulo = "L" + indexRotulo;
         indexRotulo++;
-        ocGenerator.criarRotulo(novoRotulo);
+        ocGenerator.criaRotulo(novoRotulo);
         pilhaRotulos.push(novoRotulo);
     }
 
     public void handleWhileExpression(Token token) { // #114
         String rotuloDesempilhado = pilhaRotulos.pop();
-        ocGenerator.pularParaRotulo("true", rotuloDesempilhado);
+        ocGenerator.pulaParaRotulo("true", rotuloDesempilhado);
     }
 
     public void handleUntilExpression(Token token){ // #115
         String rotuloDesempilhado = pilhaRotulos.pop();
-        ocGenerator.pularParaRotulo("false", rotuloDesempilhado);
+        ocGenerator.pulaParaRotulo("false", rotuloDesempilhado);
     }
 
     public void handleAndOperator(Token token) { // #116
