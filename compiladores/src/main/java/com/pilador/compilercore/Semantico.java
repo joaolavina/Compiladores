@@ -1,8 +1,5 @@
 package com.pilador.compilercore;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.pilador.compilercore.constants.Constants;
 import com.pilador.compilercore.errors.SemanticError;
 
