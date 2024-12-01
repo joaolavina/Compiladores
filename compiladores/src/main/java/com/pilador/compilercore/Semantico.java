@@ -10,8 +10,8 @@ public class Semantico implements Constants {
 
     private SemanticContext semanticContext;
 
-    public Semantico() {
-        this.semanticContext = new SemanticContext();
+    public Semantico(String text) {
+        this.semanticContext = new SemanticContext(text);
     }
 
     public void executeAction(int action, Token token) throws SemanticError {

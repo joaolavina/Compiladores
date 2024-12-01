@@ -15,7 +15,7 @@ public class Sintatico implements Constants
     private Token previousToken;
     private Lexico scanner;
     private Semantico semanticAnalyser;
-     private LineCalculator lineCalculator;
+    private LineCalculator lineCalculator;
 
     private static final boolean isTerminal(int x)
     {

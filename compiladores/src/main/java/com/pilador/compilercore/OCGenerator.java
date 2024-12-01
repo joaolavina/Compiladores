@@ -1,145 +1,155 @@
 package com.pilador.compilercore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OCGenerator {
 
-    private StringBuilder codigoObjeto = new StringBuilder();
+    private List<String> codigoObjeto = new ArrayList<>();
 
     public String getCodigoObjeto() {
-        return codigoObjeto.toString();
+        return String.join("\n", codigoObjeto);
     }
 
-    private void addCode(String line) {
-        codigoObjeto.append(line).append("\n");
+    private void insereCodigo(String line) {
+        codigoObjeto.add(line);
+    }
+
+    private void substituiUltimaLinha(String substituicao) {
+        codigoObjeto.removeLast();
+
+        insereCodigo(substituicao);
     }
 
     public void geraCabecalho(String nomeClasse) {
-        addCode(".assembly extern mscorlib {}");
-        addCode(".assembly _codigo_objeto{}");
-        addCode(".module _codigo_objeto.exe");
-        addCode("");
-        addCode(".class public " + nomeClasse + "{");
-        addCode(".method static public void _principal() {");
-        addCode(".entrypoint");
+        insereCodigo(".assembly extern mscorlib {}");
+        insereCodigo(".assembly _codigo_objeto{}");
+        insereCodigo(".module _codigo_objeto.exe");
+        insereCodigo("");
+        insereCodigo(".class public " + nomeClasse + "{");
+        insereCodigo("");
+        insereCodigo(".method static public void _principal() {");
+        insereCodigo(".entrypoint");
     }
 
     public void geraRodape() {
-        addCode("ret");
-        addCode("}");
-        addCode("}");
+        insereCodigo("ret");
+        insereCodigo("}");
+        insereCodigo("}");
     }
 
     public void geraSaida(String tipo) {
-        addCode("call void [mscorlib]System.Console::Write(" + tipo + ")");
+        insereCodigo("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
     public void geraSaidaLinha(String tipo) {
-        addCode("call void [mscorlib]System.Console::WriteLn(" + tipo + ")");
+        substituiUltimaLinha("call void [mscorlib]System.Console::WriteLine(" + tipo + ")");
     }
 
     public void carregaInt(String valorConstante) {
-        addCode("ldc.i8 " + valorConstante);
+        insereCodigo("ldc.i8 " + valorConstante);
     }
 
     public void carregaFloat(String valorConstante) {
-        addCode("ldc.r8 " + valorConstante);
+        insereCodigo("ldc.r8 " + valorConstante);
     }
 
     public void carregaString(String valorConstante) {
-        addCode("ldstr " + valorConstante);
+        insereCodigo("ldstr " + valorConstante);
     }
 
     public void carregaFalse() {
-        addCode("ldc.i4.0");
+        insereCodigo("ldc.i4.0");
     }
 
     public void carregaTrue() {
-        addCode("ldc.i4.1");
+        insereCodigo("ldc.i4.1");
     }
 
     public void paraInt() {
-        addCode("conv.i8");
+        insereCodigo("conv.i8");
     }
 
     public void paraFloat() {
-        addCode("conv.r8");
+        insereCodigo("conv.r8");
     }
 
     public void adicao() {
-        addCode("add");
+        insereCodigo("add");
     }
 
     public void subtracao() {
-        addCode("sub");
+        insereCodigo("sub");
     }
 
     public void multiplicacao() {
-        addCode("mul");
+        insereCodigo("mul");
     }
 
     public void divisao() {
-        addCode("div");
+        insereCodigo("div");
     }
 
     public void igualA() {
-        addCode("ceq");
+        insereCodigo("ceq");
     }
 
     public void menorQue() {
-        addCode("clt");
+        insereCodigo("clt");
     }
 
     public void maiorQue() {
-        addCode("cgt");
+        insereCodigo("cgt");
     }
 
     public void diferenteDe() {
-        addCode("ceq");
+        insereCodigo("ceq");
         carregaFalse();
         igualA();
     }
 
     public void not() {
         carregaTrue();
-        addCode("xor");
+        insereCodigo("xor");
     }
 
     public void and() {
-        addCode("and");
+        insereCodigo("and");
     }
 
     public void or() {
-        addCode("or");
+        insereCodigo("or");
     }
 
     public void carregaValorVariavel(String nomeVariavel) {
-        addCode("ldloc " + nomeVariavel);
+        insereCodigo("ldloc " + nomeVariavel);
     }
 
     public void declaraVariaveis(String variaveis) {
-        addCode(".locals (" + variaveis + ")");
+        insereCodigo(".locals (" + variaveis + ")");
     }
 
     public void duplica() {
-        addCode("dup");
+        insereCodigo("dup");
     }
 
     public void armazenaValorVariavel(String nomeVariavel) {
-        addCode("stloc " + nomeVariavel);
+        insereCodigo("stloc " + nomeVariavel);
     }
 
     public void geraEntrada() {
-        addCode("call string [mscorlib]System.Console::ReadLine()");
+        insereCodigo("call string [mscorlib]System.Console::ReadLine()");
     }
 
     public void converteEntrada(ExpressionType type) {
-        addCode("call " + type.getName() + " [mscorlib]System." + type.getClassName() +"::Parse(string)");
+        insereCodigo("call " + type.getName() + " [mscorlib]System." + type.getClassName() +"::Parse(string)");
     }
 
     public void criaRotulo(String rotulo){
-        addCode(rotulo + ":");
+        insereCodigo(rotulo + ":");
     }
 
     public void pulaParaRotulo(String condicao, String rotulo){
-        addCode("br" + condicao + " " + rotulo);
+        insereCodigo("br" + condicao + " " + rotulo);
     }
 }

@@ -9,7 +9,7 @@ public class CompilerMain {
     public String compile(String text) {
         Lexico lexico = new Lexico(text);
         Sintatico sintatico = new Sintatico();
-        Semantico semantico = new Semantico();
+        Semantico semantico = new Semantico(text);
 
         String message = "";
 
@@ -39,7 +39,7 @@ public class CompilerMain {
         } catch (SyntaticError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getMessage());
         } catch (SemanticError e) {
-            e.printStackTrace();
+            throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getMessage());
         }
 
         return message;

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import com.pilador.compilercore.errors.SemanticError;
+import com.pilador.compilercore.utils.LineCalculator;
+
 public class SemanticContext {
 
     RelationalOperator operadorRelacional; // operador relacional reconhecido pela ação #121, para uso posterior na ação
@@ -23,13 +26,15 @@ public class SemanticContext {
     private OCGenerator ocGenerator; // armazenar o código objeto gerado
 
     private int indexRotulo; // indexador para a nomeação dos rótulos
+    private LineCalculator lineCalculator;
 
-    public SemanticContext() {
+    public SemanticContext(String input) {
         this.pilhaTipos = new Stack<ExpressionType>();
         this.pilhaRotulos = new Stack<String>();
         this.listaIdentificadores = new ArrayList<Identifier>();
         this.tabelaSimbolos = new HashMap<String, Identifier>();
         this.ocGenerator = new OCGenerator();
+        this.lineCalculator = new LineCalculator(input);
 
         indexRotulo = 0;
     }
@@ -42,48 +47,58 @@ public class SemanticContext {
         ocGenerator.geraRodape();
     }
 
-    public void handleIdentifierDeclaration(Token token) { // #102
+    public void verifyDuplicatedIdentifier(String idName, int position) throws SemanticError { 
+        if (tabelaSimbolos.containsKey(idName)) {
+            throw new SemanticError (idName + " já declarado", lineCalculator.getLine(position));
+        }
+    }
+
+    public void verifyIdentifierExistence(String idName, int position) throws SemanticError { 
+        if (!tabelaSimbolos.containsKey(idName)) {
+            throw new SemanticError (idName + " não declarado", lineCalculator.getLine(position));
+        }
+    }
+
+    public void handleIdentifierDeclaration(Token token) throws SemanticError { // #102
         String ilDeclaration = "";
 
         for (int i = 0; i < listaIdentificadores.size(); i++) {
             Identifier id = listaIdentificadores.get(i);
-            if (tabelaSimbolos.containsKey(id.getName())) {
-                throw new IllegalArgumentException(
-                        "Linha " + token.getPosition() + ": " + id.getName() + " já declarado");
-            } else {
-                ExpressionType type = null;
-                String prefix = getPrefixIdentifier(id.getName());
-                switch (prefix) {
-                    case "i_":
-                        type = ExpressionType.INT64;
-                        break;
-                    case "f_":
-                        type = ExpressionType.FLOAT64;
-                        break;
-                    case "s_":
-                        type = ExpressionType.STRING;
-                        break;
-                    case "b_":
-                        type = ExpressionType.BOOL;
-                        break;
-                }
 
-                id.setType(type);
-                tabelaSimbolos.put(id.getName(), id);
+            verifyDuplicatedIdentifier(id.getName(), token.getPosition());
 
-                if (ilDeclaration != "")
-                    ilDeclaration += ", ";
-
-                ilDeclaration += id.getType().getName() + " " + id.getName();
+            ExpressionType type = null;
+            String prefix = getPrefixIdentifier(id.getName());
+            switch (prefix) {
+                case "i_":
+                    type = ExpressionType.INT64;
+                    break;
+                case "f_":
+                    type = ExpressionType.FLOAT64;
+                    break;
+                case "s_":
+                    type = ExpressionType.STRING;
+                    break;
+                case "b_":
+                    type = ExpressionType.BOOL;
+                    break;
             }
+
+            id.setType(type);
+            tabelaSimbolos.put(id.getName(), id);
+
+            if (ilDeclaration != "")
+                ilDeclaration += ", ";
+
+            ilDeclaration += id.getType().getName() + " " + id.getName();
         }
 
         ocGenerator.declaraVariaveis(ilDeclaration);
         listaIdentificadores.removeAll(listaIdentificadores);
     }
 
-    public void handleAtributionExpression(Token token) { // #103
-        ExpressionType tipoDesemp = pilhaTipos.pop();
+    public void handleAtributionExpression(Token token) throws SemanticError { // #103
+        ExpressionType tipoDesemp = pilhaTipos.peek();
 
         if (tipoDesemp == ExpressionType.INT64)
             ocGenerator.paraInt();
@@ -93,14 +108,12 @@ public class SemanticContext {
         }
 
         for (Identifier identifier : listaIdentificadores) {
-            if (!tabelaSimbolos.containsKey(identifier.getName())) {
-                throw new IllegalArgumentException(
-                        "Linha " + token.getPosition() + ": " + identifier.getName() + " não declarado");
-            } else {
-                ocGenerator.armazenaValorVariavel(identifier.getName());
-                // if (tipoDesemp == ExpressionType.INT64)
-                // ocGenerator.paraInt();
-            }
+            
+            verifyIdentifierExistence(identifier.getName(), token.getPosition());
+
+            ocGenerator.armazenaValorVariavel(identifier.getName());
+            // if (tipoDesemp == ExpressionType.INT64)
+            // ocGenerator.paraInt();
         }
 
         listaIdentificadores.removeAll(listaIdentificadores);
@@ -109,32 +122,31 @@ public class SemanticContext {
         listaIdentificadores.add(new Identifier(token.getLexeme()));
     }
 
-    public void handleReadAttribution(Token token) { // #105
-        if (!tabelaSimbolos.containsKey(token.getLexeme())) {
-            throw new IllegalArgumentException(
-                    "Linha " + token.getPosition() + ": " + token.getLexeme() + " não declarado.");
-        } else {
-            Identifier id = tabelaSimbolos.get(token.getLexeme());
-            String prefix = getPrefixIdentifier(id.getName());
+    public void handleReadAttribution(Token token) throws SemanticError { // #105
 
-            ExpressionType type = null;
+        verifyIdentifierExistence(token.getLexeme(), token.getPosition());
+    
+        Identifier id = tabelaSimbolos.get(token.getLexeme());
+        String prefix = getPrefixIdentifier(id.getName());
 
-            ocGenerator.geraEntrada();
-            if (!prefix.equals("s_")) {
-                switch (prefix) {
-                    case "i_":
-                        type = ExpressionType.INT64;
-                        break;
-                    case "f_":
-                        type = ExpressionType.FLOAT64;
-                        break;
-                    case "b_":
-                        type = ExpressionType.BOOL;
-                        break;
-                }
+        ExpressionType type = null;
 
-                ocGenerator.converteEntrada(type);
+        ocGenerator.geraEntrada();
+        if (!prefix.equals("s_")) {
+            switch (prefix) {
+                case "i_":
+                    type = ExpressionType.INT64;
+                    break;
+                case "f_":
+                    type = ExpressionType.FLOAT64;
+                    break;
+                case "b_":
+                    type = ExpressionType.BOOL;
+                    break;
             }
+
+            ocGenerator.converteEntrada(type);
+            
 
             ocGenerator.armazenaValorVariavel(id.getName());
         }
@@ -148,14 +160,11 @@ public class SemanticContext {
     public void handleWriteLnCommand(Token token) { // #107
         ExpressionType tipoDesemp = pilhaTipos.pop();
 
-        if (tipoDesemp == ExpressionType.FLOAT64)
-            ocGenerator.paraInt();
-
         ocGenerator.geraSaidaLinha(tipoDesemp.getName());
     }
 
     public void handleWriteCommand(Token token) { // #108
-        ExpressionType tipoDesemp = pilhaTipos.pop();
+        ExpressionType tipoDesemp = pilhaTipos.peek();
 
         if (tipoDesemp == ExpressionType.INT64)
             ocGenerator.paraInt();
@@ -213,26 +222,26 @@ public class SemanticContext {
         ocGenerator.pulaParaRotulo("false", rotuloDesempilhado);
     }
 
-    public void handleAndOperator(Token token) { // #116
+    public void handleAndOperator(Token token) throws SemanticError { // #116
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
         if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
-            throw new IllegalArgumentException(
-                    "Operação relacional inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         pilhaTipos.push(ExpressionType.BOOL);
 
         ocGenerator.and();
     }
 
-    public void handleOrOperator(Token token) { // #117
+    public void handleOrOperator(Token token) throws SemanticError{ // #117
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
         if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
-            throw new IllegalArgumentException(
-                    "Operação relacional inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         pilhaTipos.push(ExpressionType.BOOL);
 
@@ -258,14 +267,14 @@ public class SemanticContext {
         operadorRelacional = RelationalOperator.fromSymbol(token.getLexeme());
     }
 
-    public void handleRelationalOperation(Token token) { // #122
+    public void handleRelationalOperation(Token token) throws SemanticError { // #122
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
         if (tipoDesemp1 != tipoDesemp2)
-            throw new IllegalArgumentException(
-                    "Operação relacional inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
-
+            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+            
         pilhaTipos.push(ExpressionType.BOOL);
 
         switch (operadorRelacional.getSymbol()) {
@@ -284,17 +293,16 @@ public class SemanticContext {
         }
     }
 
-    public boolean validNumericType(ExpressionType et) {
+    public boolean verifyValidNumericType(ExpressionType et) {
         return (et != ExpressionType.STRING && et != ExpressionType.BOOL);
     }
 
-    public void handleAddition(Token token) { // #123
+    public void handleAddition(Token token) throws SemanticError { // #123
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
-        if (!validNumericType(tipoDesemp1) || !validNumericType(tipoDesemp2))
-            throw new IllegalArgumentException(
-                    "Operação de adição inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+            throw new SemanticError("Operação de adição inválida para " + tipoDesemp2.getFormatName() + " e " + tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         ExpressionType tipoResultante;
 
@@ -307,14 +315,14 @@ public class SemanticContext {
         ocGenerator.adicao();
     }
 
-    public void handleSubtraction(Token token) { // #124
+    public void handleSubtraction(Token token) throws SemanticError { // #124
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
         ExpressionType tipoResultante;
 
-        if (!validNumericType(tipoDesemp1) || !validNumericType(tipoDesemp2))
-            throw new IllegalArgumentException(
-                    "Operação de subtração inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+            throw new SemanticError("Operação de subtração inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         if (tipoDesemp1 == ExpressionType.FLOAT64 || tipoDesemp2 == ExpressionType.FLOAT64)
             tipoResultante = ExpressionType.FLOAT64;
@@ -325,15 +333,15 @@ public class SemanticContext {
         ocGenerator.subtracao();
     }
 
-    public void handleMultiplication(Token token) { // #125
+    public void handleMultiplication(Token token) throws SemanticError { // #125
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
         ExpressionType tipoResultante;
 
-        if (!validNumericType(tipoDesemp1) || !validNumericType(tipoDesemp2))
-            throw new IllegalArgumentException(
-                    "Operação de multiplicação inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
-
+        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+            throw new SemanticError("Operação de multiplicação inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+            
         if (tipoDesemp1 == ExpressionType.FLOAT64 || tipoDesemp2 == ExpressionType.FLOAT64)
             tipoResultante = ExpressionType.FLOAT64;
         else
@@ -343,33 +351,31 @@ public class SemanticContext {
         ocGenerator.multiplicacao();
     }
 
-    public void handleDivision(Token token) { // #126
+    public void handleDivision(Token token) throws SemanticError { // #126
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
-        if (!validNumericType(tipoDesemp1) || !validNumericType(tipoDesemp2))
-            throw new IllegalArgumentException(
-                    "Operação de divisão inválida para " + tipoDesemp2.getName() + " e " + tipoDesemp1.getName());
+        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+            throw new SemanticError("Operação de divisão inválida para " + tipoDesemp2.getFormatName() + " e " +
+            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         ExpressionType tipoResultante = ExpressionType.FLOAT64;
         pilhaTipos.push(tipoResultante);
         ocGenerator.divisao();
     }
 
-    public void handleIdentifier(Token token) { // #127
-        if (!tabelaSimbolos.containsKey(token.getLexeme())) {
-            throw new IllegalArgumentException(
-                    "Linha " + token.getPosition() + ": " + token.getLexeme() + " não declarado");
-        } else {
-            Identifier id = tabelaSimbolos.get(token.getLexeme());
+    public void handleIdentifier(Token token) throws SemanticError { // #127
 
-            pilhaTipos.push(id.getType());
+        verifyIdentifierExistence(token.getLexeme(), token.getPosition());
+        
+        Identifier id = tabelaSimbolos.get(token.getLexeme());
 
-            ocGenerator.carregaValorVariavel(id.getName());
+        pilhaTipos.push(id.getType());
 
-            if (id.getType() == ExpressionType.INT64)
-                ocGenerator.paraFloat();
-        }
+        ocGenerator.carregaValorVariavel(id.getName());
+
+        if (id.getType() == ExpressionType.INT64)
+            ocGenerator.paraFloat();    
     }
 
     public void handleIntExpression(Token token) { // #128
@@ -394,11 +400,12 @@ public class SemanticContext {
         ocGenerator.carregaString(valorConstante);
     }
 
-    public void handleNegativeExpression(Token token) { // #131
+    public void handleNegativeExpression(Token token) throws SemanticError{ // #131
         ExpressionType tipoDesemp = pilhaTipos.peek();
 
-        if (!validNumericType(tipoDesemp))
-            throw new IllegalArgumentException("Operação de inversão inválida para " + tipoDesemp.getName());
+        if (!verifyValidNumericType(tipoDesemp))
+            throw new SemanticError("Operação de negação inválida para " + tipoDesemp.getFormatName(),
+            lineCalculator.getLine(token.getPosition()));
 
         ocGenerator.carregaFloat("-1.0");
         ocGenerator.multiplicacao();
