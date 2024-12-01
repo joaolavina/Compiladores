@@ -66,6 +66,9 @@ public class FileHandler {
     }
 
     public String generateILFile(String currentDir, String codigoObjeto) {
+        if (currentDir.isBlank())
+            throw new IllegalArgumentException("Abra um arquivo já salvo.");
+
         File sourceFile = new File(currentDir);
 
         String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");

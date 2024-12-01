@@ -39,14 +39,14 @@ public class CompilerMain {
 
             message += fileHandler.generateILFile(currentDirectory, semantico.getObjectCode());
 
-            
-
         } catch (LexicalError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getSymbol() + e.getMessage());
         } catch (SyntaticError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getMessage());
         } catch (SemanticError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Erro: " + e.getMessage());
         }
 
         return message;
