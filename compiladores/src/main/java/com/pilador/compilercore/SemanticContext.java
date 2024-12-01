@@ -37,7 +37,7 @@ public class SemanticContext {
     }
 
     public void handleProgramHeader() { // #100
-        ocGenerator.geraCabecalho("teste");
+        ocGenerator.geraCabecalho("_UNICA");
     }
 
     public void handleProgramEnd() { // #101
@@ -58,6 +58,7 @@ public class SemanticContext {
 
     public void handleIdentifierDeclaration(Token token) throws SemanticError { // #102
         String ilDeclaration = "";
+        List<String> ilDeclarations = new ArrayList<>();
 
         for (int i = 0; i < listaIdentificadores.size(); i++) {
             Identifier id = listaIdentificadores.get(i);
@@ -84,13 +85,15 @@ public class SemanticContext {
             id.setType(type);
             tabelaSimbolos.put(id.getName(), id);
 
-            if (ilDeclaration != "")
-                ilDeclaration += ", ";
+            // if (ilDeclaration != "")
+            //     ilDeclaration += ", ";
 
-            ilDeclaration += id.getType().getName() + " " + id.getName();
+            ilDeclaration = id.getType().getName() + " " + id.getName();
+
+            ilDeclarations.add(ilDeclaration);
         }
 
-        ocGenerator.declaraVariaveis(ilDeclaration);
+        ocGenerator.declaraVariaveis(ilDeclarations);
         listaIdentificadores.removeAll(listaIdentificadores);
     }
 

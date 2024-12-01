@@ -27,8 +27,7 @@ public class OCGenerator {
         insereCodigo(".module _codigo_objeto.exe");
         insereCodigo("");
         insereCodigo(".class public " + nomeClasse + "{");
-        insereCodigo("");
-        insereCodigo(".method static public void _principal() {");
+        insereCodigo(".method static public void _principal(){");
         insereCodigo(".entrypoint");
     }
 
@@ -125,8 +124,9 @@ public class OCGenerator {
         insereCodigo("ldloc " + nomeVariavel);
     }
 
-    public void declaraVariaveis(String variaveis) {
-        insereCodigo(".locals (" + variaveis + ")");
+    public void declaraVariaveis(List<String> variaveis) {
+        for (String variavel : variaveis)
+            insereCodigo(".locals (" + variavel + ")");
     }
 
     public void duplica() {
