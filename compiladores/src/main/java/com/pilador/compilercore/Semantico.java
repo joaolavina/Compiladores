@@ -24,7 +24,6 @@ public class Semantico implements Constants {
                 break;
             case 101:
                 semanticContext.handleProgramEnd();
-                generatedCodeToFile();
                 break;
             case 102:
                 semanticContext.handleIdentifierDeclaration(token);
@@ -118,22 +117,8 @@ public class Semantico implements Constants {
 
     }
 
-    private void generatedCodeToFile() {
-        // String currentDir = Paths.get("").toAbsolutePath().toString();
-
-        String currentDir = System.getProperty("user.dir");
-        File sourceFile = new File(currentDir);
-
-        String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");
-
-        File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
-
-        try {
-            semanticContext.generatedCodeToFile(ilFile);
-            System.out.println("Código objeto salvo em: " + ilFile.getAbsolutePath());
-        } catch (IOException e) {
-            System.err.println("Erro ao salvar o código objeto: " + e.getMessage());
-        }
+    public String getObjectCode() {
+        return semanticContext.getCodigoObjeto();
     }
 
 }

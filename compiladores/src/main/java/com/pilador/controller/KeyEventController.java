@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.pilador.compilercore.CompilerMain;
-import com.pilador.model.FileHandler;
+import com.pilador.compilercore.utils.FileHandler;
 import com.pilador.view.EditorArea;
 import com.pilador.view.MessageArea;
 import com.pilador.view.StatusBar;
@@ -35,7 +35,7 @@ public class KeyEventController {
         try {
             String text = editorArea.getEditorAreaText();
 
-            String result = compiler.compile(text);
+            String result = compiler.compile(text, statusBar.getStatusBarText());
 
             resultArea.setMessageAreaText(result);
 

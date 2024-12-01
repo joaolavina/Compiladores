@@ -3,10 +3,11 @@ package com.pilador.compilercore;
 import com.pilador.compilercore.errors.LexicalError;
 import com.pilador.compilercore.errors.SemanticError;
 import com.pilador.compilercore.errors.SyntaticError;
+import com.pilador.compilercore.utils.FileHandler;
 
 public class CompilerMain {
 
-    public String compile(String text) {
+    public String compile(String text, String currentDirectory) {
         Lexico lexico = new Lexico(text);
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico(text);
@@ -32,7 +33,13 @@ public class CompilerMain {
 
             sintatico.parse(lexico, semantico);
 
+            FileHandler fileHandler = new FileHandler();
+
             message += "Programa compilado com sucesso";
+
+            message += fileHandler.generateILFile(currentDirectory, semantico.getObjectCode());
+
+            
 
         } catch (LexicalError e) {
             throw new RuntimeException("Erro na linha " + e.getPosition() + " – " + e.getSymbol() + e.getMessage());

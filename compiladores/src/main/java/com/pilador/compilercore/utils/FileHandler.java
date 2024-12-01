@@ -1,6 +1,7 @@
-package com.pilador.model;
+package com.pilador.compilercore.utils;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -62,6 +63,26 @@ public class FileHandler {
         }
 
         return new String[]{resultText, file.getAbsolutePath()};
+    }
+
+    public String generateILFile(String currentDir, String codigoObjeto) {
+        File sourceFile = new File(currentDir);
+
+        String fileNameWithoutExtension = sourceFile.getName().replaceAll("\\.txt$", "");
+
+        File ilFile = new File(sourceFile.getParent(), fileNameWithoutExtension + ".il");
+
+        if (!ilFile.getParentFile().exists()) {
+            ilFile.getParentFile().mkdirs();
+        }
+
+        try (FileWriter writer = new FileWriter(ilFile)) {
+            writer.write(codigoObjeto);
+
+            return "";
+        } catch (IOException e) {
+            return ("Erro ao salvar o código objeto: " + e.getMessage());
+        }
     }
 
 }

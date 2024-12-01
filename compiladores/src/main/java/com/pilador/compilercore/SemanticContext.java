@@ -411,18 +411,6 @@ public class SemanticContext {
         ocGenerator.multiplicacao();
     }
 
-    // geração do arquivo .il
-
-    public void generatedCodeToFile(File ilFile) throws IOException {
-        if (!ilFile.getParentFile().exists()) {
-            ilFile.getParentFile().mkdirs();
-        }
-
-        try (FileWriter writer = new FileWriter(ilFile)) {
-            writer.write(ocGenerator.getCodigoObjeto());
-        }
-    }
-
     public String getCodigoObjeto() {
         return ocGenerator.getCodigoObjeto();
     }
