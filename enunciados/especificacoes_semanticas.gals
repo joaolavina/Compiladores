@@ -1,0 +1,231 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = LL
+#RegularDefinitions
+
+  min: [a-z]
+  mai: [A-Z]
+  digito: [0-9]
+  prefixo: (i|f|b|s)_
+  letra: {min} | {mai}
+  digs: [1-9]
+#Tokens
+
+	// equipe 10: Cristina, Daniel Neves e João Gabriel
+
+	
+	// palavra reservada
+
+	pr: {min} ({letra})*
+
+
+	// identificador (:!)
+
+	id:! {prefixo} ({min} ({mai})? | {mai}) (({min} | {digito})+ ({mai})?)*
+
+
+	// cte_int
+
+	int: ({digs} ({digito})*) | 0
+
+
+	// cte_float
+	
+	float: (({digs} ({digito})*) | 0 ) "," ((({digito})* {digs}) | 0)
+
+
+	// cte_string
+
+	string: \"(([^\"\n%]) | (%x))*\"
+
+	main = pr: "main"
+	end = pr: "end"
+	if = pr: "if"
+	elif = pr: "elif"
+	else = pr: "else"
+	false = pr: "false"
+	true = pr: "true"
+	read = pr: "read"
+	write = pr: "write"
+	writeln = pr: "writeln"
+	repeat = pr: "repeat"
+	until = pr: "until"
+	while = pr: "while"
+
+
+	// comentário bloco
+
+	:! >@ \n [^@]* \n @<
+ 
+
+	// símbolos especiais
+
+	"&&"
+	"||"
+	"!"
+	"=="
+	"!="
+	">"
+	"<"
+	"+"
+	"-"
+	"*"
+	"/"
+	","
+	";"
+	"="
+	"("
+	")"
+
+	// caracteres de formatação
+
+	:[\s\t\n]
+
+
+#NonTerminals
+<programa>
+
+<lista_instr>
+
+<opcao_instr>
+
+<instrucao>
+
+<opcao_instr2>
+
+<lista_id>
+
+<opcao_id>
+
+<cmd>
+
+<lista_cmd>
+
+<opcao_cmd>
+
+<atrib>
+
+<entrada>
+
+<lista_entra>
+
+<opcao_entra>
+
+<opcao_entra1>
+
+<saida>
+
+<lista_expr>
+
+<opcao_expr>
+
+<select>
+
+<opcao_elif>
+
+<opcao_else>
+
+<repeat>
+
+<opcao_rep>
+
+<expressao>
+
+<expressao1>
+
+<elemento>
+
+<relacional>
+
+<relacional1>
+
+<operador_relacional>
+
+<aritmetica>
+
+<aritmetica1>
+
+<termo>
+
+<termo1>
+
+<fator>
+#Grammar
+<programa> ::= #100 main <lista_instr> end #101 ;
+
+<lista_instr> ::= <instrucao> <opcao_instr> ;
+
+<opcao_instr> ::= <lista_instr> | î ;
+
+<instrucao> ::= <lista_id> <opcao_instr2> | <entrada> ";" | <saida> ";" | <select> ";" | <repeat> ";" ;
+
+<opcao_instr2> ::= ";" #102 | "=" <expressao> ";" #103 ;
+
+<lista_id> ::= id #104 <opcao_id> ;
+
+<opcao_id> ::=  "," <lista_id> | î ;
+
+<cmd> ::= <atrib> | <entrada> | <saida> | <select> | <repeat> ;
+
+<lista_cmd> ::= <cmd> ";" <opcao_cmd> ;
+
+<opcao_cmd> ::= <lista_cmd> | î ;
+
+<atrib> ::= <lista_id> "=" <expressao> #103 ;
+
+<entrada> ::= read "(" <lista_entra> ")" ;
+
+<lista_entra> ::= string #106 "," <opcao_entra> | <opcao_entra> ;
+
+<opcao_entra> ::= id #105 <opcao_entra1> ;
+
+<opcao_entra1> ::= î | "," <lista_entra> ;
+
+<saida> ::= write "(" <lista_expr> ")" | writeln "(" <lista_expr> ")" #107 ;
+
+<lista_expr> ::= <expressao> #108 <opcao_expr> ;
+
+<opcao_expr> ::= "," <lista_expr> | î ;
+
+<select> ::= if <expressao> #109 <lista_cmd> <opcao_elif> #110 <opcao_else> #111 end ;
+
+<opcao_elif> ::= î | #110 elif <expressao> #112 <lista_cmd> <opcao_elif> ;
+
+<opcao_else> ::= î | else <lista_cmd> ;
+
+<repeat> ::= #113 repeat <lista_cmd> <opcao_rep> ;
+
+<opcao_rep> ::= until <expressao> #115 | while <expressao> #114 ;
+
+<expressao> ::= <elemento> <expressao1> ;
+
+<expressao1> ::= î | "&&" <elemento> #116 <expressao1> | "||" <elemento> #117 <expressao1> ;
+
+<elemento> ::= <relacional> | true #118 | false #119 | "!" <elemento> #120 ;
+
+<relacional> ::= <aritmetica> <relacional1> ;
+
+<relacional1> ::= î | <operador_relacional> #121 <aritmetica> #122 ;
+
+<operador_relacional> ::= "==" | "!=" | "<" | ">" ;
+
+<aritmetica> ::= <termo> <aritmetica1> ;
+
+<aritmetica1> ::= î | "+" <termo> #123 <aritmetica1> | "-" <termo> #124 <aritmetica1> ;
+
+<termo> ::= <fator> <termo1> ;
+
+<termo1> ::= î | "*" <fator> #125 <termo1> | "/" <fator> #126  <termo1> ;
+
+<fator> ::= id #127 | int #128 | float #129 | string #130 | "(" <expressao> ")" | "+" <fator> | "-" <fator> #131 ; 
+
+
+

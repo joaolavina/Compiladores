@@ -18,6 +18,10 @@ public class StatusBar extends JLabel {
         super.setText(text);
     }
 
+    public String getStatusBarText(){
+        return this.getText();
+    }
+
     public void cleanStatusBar() {
         setText("");
     }

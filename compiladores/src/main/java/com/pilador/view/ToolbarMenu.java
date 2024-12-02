@@ -41,8 +41,8 @@ public class ToolbarMenu extends JToolBar {
     }
 
     private JButton createButton(String text, String toolTip) {
-        String iconPath = "compiladores/src/main/resources/images/" + text + ".png";
-        Icon icon = new ImageIcon(iconPath);
+        String iconPath = "/images/" + text + ".png";
+        Icon icon = new ImageIcon(getClass().getResource(iconPath));
         JButton btn = new JButton(text + " [" + toolTip + "] ", icon);
         btn.setToolTipText(toolTip);
 
@@ -115,28 +115,28 @@ public class ToolbarMenu extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 switch (text) {
                     case "Novo":
-                        controller.newFile();
+                        controller.newFileAction();
                         break;
                     case "Abrir":
-                        controller.openFile();
+                        controller.openFileAction();
                         break;
                     case "Salvar":
-                        controller.saveFile();
+                        controller.saveFileAction();
                         break;
                     case "Copiar":
-                        controller.copy();
+                        controller.copyAction();
                         break;
                     case "Colar":
-                        controller.paste();
+                        controller.pasteAction();
                         break;
                     case "Cortar":
-                        controller.cut();
+                        controller.cutAction();
                         break;
                     case "Compilar":
-                        controller.compileProgram();
+                        controller.compileProgramAction();
                         break;
                     case "Equipe":
-                        controller.showTeamInfo();
+                        controller.showTeamInfoAction();
                         break;
                 }
             }

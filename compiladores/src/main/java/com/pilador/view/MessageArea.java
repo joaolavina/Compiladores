@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 public class MessageArea extends JPanel {
 
@@ -28,6 +29,8 @@ public class MessageArea extends JPanel {
     public MessageArea() {
         messageArea = new JTextArea();
         messageArea.setEditable(false);
+        messageArea.setFocusable(false);
+        messageArea.setBorder(new EmptyBorder(5,10,0,0));
         messageArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
         scrollPane = new JScrollPane(messageArea);

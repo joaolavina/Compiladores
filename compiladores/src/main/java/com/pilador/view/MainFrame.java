@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.pilador.controller.KeyEventController;
 
@@ -15,6 +16,7 @@ public class MainFrame extends JFrame {
     private MessageArea messageArea;
     private DividerPane divider;
     private StatusBar statusBar;
+    private JFileChooser fileChooser;
 
     public MainFrame() {
         setTitle("Compilador");
@@ -36,8 +38,14 @@ public class MainFrame extends JFrame {
         statusBar = new StatusBar();
         add(statusBar, BorderLayout.SOUTH);
 
+        // FileChooser
+        fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de texto (*.txt)", "txt");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
         // Barra de ferramentas
-        KeyEventController controller = new KeyEventController(messageArea, editorArea, statusBar);
+        KeyEventController controller = new KeyEventController(messageArea, editorArea, statusBar, fileChooser);
         toolbar = new ToolbarMenu(controller);
         add(toolbar, BorderLayout.NORTH);
 
