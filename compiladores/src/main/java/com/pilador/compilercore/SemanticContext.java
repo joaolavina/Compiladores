@@ -98,7 +98,7 @@ public class SemanticContext {
     }
 
     public void handleAtributionExpression(Token token) throws SemanticError { // #103
-        ExpressionType tipoDesemp = pilhaTipos.peek();
+        ExpressionType tipoDesemp = pilhaTipos.pop();
 
         if (tipoDesemp == ExpressionType.INT64)
             ocGenerator.paraInt();
@@ -164,7 +164,7 @@ public class SemanticContext {
     }
 
     public void handleWriteCommand(Token token) { // #108
-        ExpressionType tipoDesemp = pilhaTipos.peek();
+        ExpressionType tipoDesemp = pilhaTipos.pop();
 
         if (tipoDesemp == ExpressionType.INT64)
             ocGenerator.paraInt();
