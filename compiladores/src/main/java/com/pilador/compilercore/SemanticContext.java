@@ -157,10 +157,8 @@ public class SemanticContext {
         ocGenerator.geraSaida(ExpressionType.STRING.getName());
     }
 
-    public void handleWriteLnCommand(Token token) { // #107
-        ExpressionType tipoDesemp = pilhaTipos.pop();
-
-        ocGenerator.geraSaidaLinha(tipoDesemp.getName());
+    public void handleWriteLnCommand() { // #107
+        ocGenerator.geraSaidaLinha();
     }
 
     public void handleWriteCommand(Token token) { // #108

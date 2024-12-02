@@ -15,12 +15,6 @@ public class OCGenerator {
         codigoObjeto.add(line);
     }
 
-    private void substituiUltimaLinha(String substituicao) {
-        codigoObjeto.removeLast();
-
-        insereCodigo(substituicao);
-    }
-
     public void geraCabecalho(String nomeClasse) {
         insereCodigo(".assembly extern mscorlib {}");
         insereCodigo(".assembly _codigo_objeto{}");
@@ -41,8 +35,12 @@ public class OCGenerator {
         insereCodigo("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
-    public void geraSaidaLinha(String tipo) {
-        substituiUltimaLinha("call void [mscorlib]System.Console::WriteLine(" + tipo + ")");
+    public void geraSaidaLinha() {
+        String ultimaAtual = codigoObjeto.removeLast();
+
+        String novaUltima = ultimaAtual.replace("Write", "WriteLine");
+
+        insereCodigo(novaUltima);
     }
 
     public void carregaInt(String valorConstante) {

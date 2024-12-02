@@ -38,7 +38,7 @@ public class Semantico implements Constants {
                 semanticContext.handleReadCommand(token);
                 break;
             case 107:
-                semanticContext.handleWriteLnCommand(token);
+                semanticContext.handleWriteLnCommand();
                 break;
             case 108:
                 semanticContext.handleWriteCommand(token);
