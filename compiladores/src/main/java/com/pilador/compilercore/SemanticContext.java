@@ -221,12 +221,14 @@ public class SemanticContext {
     }
 
     public void handleAndOperator(Token token) throws SemanticError { // #116
-        ExpressionType tipoDesemp1 = pilhaTipos.pop();
-        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+        //ExpressionType tipoDesemp1 = 
+        pilhaTipos.pop();
+        //ExpressionType tipoDesemp2 = 
+        pilhaTipos.pop();
 
-        if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
-            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
+        //     throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         pilhaTipos.push(ExpressionType.BOOL);
 
@@ -234,12 +236,14 @@ public class SemanticContext {
     }
 
     public void handleOrOperator(Token token) throws SemanticError{ // #117
-        ExpressionType tipoDesemp1 = pilhaTipos.pop();
-        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+        //ExpressionType tipoDesemp1 = 
+        pilhaTipos.pop();
+        //ExpressionType tipoDesemp2 = 
+        pilhaTipos.pop();
 
-        if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
-            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (tipoDesemp1 != ExpressionType.BOOL || tipoDesemp2 != ExpressionType.BOOL)
+        //     throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         pilhaTipos.push(ExpressionType.BOOL);
 
@@ -258,11 +262,12 @@ public class SemanticContext {
     }
 
     public void handleNotOperator(Token token) throws SemanticError { // #120
-        ExpressionType tipoDesemp = pilhaTipos.peek();
+        //ExpressionType tipoDesemp = 
+        pilhaTipos.peek();
 
-        if (tipoDesemp != ExpressionType.BOOL)
-            throw new SemanticError("Operação de negação lógica inválida para " + tipoDesemp.getFormatName(),
-            lineCalculator.getLine(token.getPosition()));
+        // if (tipoDesemp != ExpressionType.BOOL)
+        //     throw new SemanticError("Operação de negação lógica inválida para " + tipoDesemp.getFormatName(),
+        //     lineCalculator.getLine(token.getPosition()));
 
         ocGenerator.not();
     }
@@ -272,12 +277,14 @@ public class SemanticContext {
     }
 
     public void handleRelationalOperation(Token token) throws SemanticError { // #122
-        ExpressionType tipoDesemp1 = pilhaTipos.pop();
-        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+        //ExpressionType tipoDesemp1 = 
+        pilhaTipos.pop();
+        //xpressionType tipoDesemp2 = 
+        pilhaTipos.pop();
 
-        if ((tipoDesemp1 != tipoDesemp2) || (tipoDesemp1 == ExpressionType.BOOL || tipoDesemp2 == ExpressionType.BOOL))
-            throw new SemanticError("Operação relacional inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if ((tipoDesemp1 != tipoDesemp2) || (tipoDesemp1 == ExpressionType.BOOL || tipoDesemp2 == ExpressionType.BOOL))
+        //     throw new SemanticError("Operação relacional inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
             
         pilhaTipos.push(ExpressionType.BOOL);
 
@@ -305,8 +312,8 @@ public class SemanticContext {
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
-        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
-            throw new SemanticError("Operação de adição inválida para " + tipoDesemp2.getFormatName() + " e " + tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+        //     throw new SemanticError("Operação de adição inválida para " + tipoDesemp2.getFormatName() + " e " + tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         ExpressionType tipoResultante;
 
@@ -324,9 +331,9 @@ public class SemanticContext {
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
         ExpressionType tipoResultante;
 
-        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
-            throw new SemanticError("Operação de subtração inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+        //     throw new SemanticError("Operação de subtração inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         if (tipoDesemp1 == ExpressionType.FLOAT64 || tipoDesemp2 == ExpressionType.FLOAT64)
             tipoResultante = ExpressionType.FLOAT64;
@@ -342,9 +349,9 @@ public class SemanticContext {
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
         ExpressionType tipoResultante;
 
-        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
-            throw new SemanticError("Operação de multiplicação inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+        //     throw new SemanticError("Operação de multiplicação inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
             
         if (tipoDesemp1 == ExpressionType.FLOAT64 || tipoDesemp2 == ExpressionType.FLOAT64)
             tipoResultante = ExpressionType.FLOAT64;
@@ -356,12 +363,14 @@ public class SemanticContext {
     }
 
     public void handleDivision(Token token) throws SemanticError { // #126
-        ExpressionType tipoDesemp1 = pilhaTipos.pop();
-        ExpressionType tipoDesemp2 = pilhaTipos.pop();
+        //ExpressionType tipoDesemp1 = 
+        pilhaTipos.pop();
+        //ExpressionType tipoDesemp2 = 
+        pilhaTipos.pop();
 
-        if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
-            throw new SemanticError("Operação de divisão inválida para " + tipoDesemp2.getFormatName() + " e " +
-            tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
+        // if (!verifyValidNumericType(tipoDesemp1) || !verifyValidNumericType(tipoDesemp2))
+        //     throw new SemanticError("Operação de divisão inválida para " + tipoDesemp2.getFormatName() + " e " +
+        //     tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
 
         ExpressionType tipoResultante = ExpressionType.FLOAT64;
         pilhaTipos.push(tipoResultante);
@@ -405,11 +414,12 @@ public class SemanticContext {
     }
 
     public void handleInversionExpression(Token token) throws SemanticError{ // #131
-        ExpressionType tipoDesemp = pilhaTipos.peek();
+        //ExpressionType tipoDesemp = 
+        pilhaTipos.peek();
 
-        if (!verifyValidNumericType(tipoDesemp))
-            throw new SemanticError("Operação de inversão inválida para " + tipoDesemp.getFormatName(),
-            lineCalculator.getLine(token.getPosition()));
+        // if (!verifyValidNumericType(tipoDesemp))
+        //     throw new SemanticError("Operação de inversão inválida para " + tipoDesemp.getFormatName(),
+        //     lineCalculator.getLine(token.getPosition()));
 
         ocGenerator.carregaFloat("-1.0");
         ocGenerator.multiplicacao();
