@@ -108,7 +108,7 @@ public class Semantico implements Constants {
                 semanticContext.handleStringExpression(token);
                 break;
             case 131:
-                semanticContext.handleNegativeExpression(token);
+                semanticContext.handleInversionExpression(token);
                 break;
         }
 

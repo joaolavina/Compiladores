@@ -259,7 +259,13 @@ public class SemanticContext {
             ocGenerator.carregaFalse();
     }
 
-    public void handleNotOperator(Token token) { // #120
+    public void handleNotOperator(Token token) throws SemanticError { // #120
+        ExpressionType tipoDesemp = pilhaTipos.peek();
+
+        if (tipoDesemp != ExpressionType.BOOL)
+            throw new SemanticError("Operação de negação lógica inválida para " + tipoDesemp.getFormatName(),
+            lineCalculator.getLine(token.getPosition()));
+
         ocGenerator.not();
     }
 
@@ -271,8 +277,8 @@ public class SemanticContext {
         ExpressionType tipoDesemp1 = pilhaTipos.pop();
         ExpressionType tipoDesemp2 = pilhaTipos.pop();
 
-        if (tipoDesemp1 != tipoDesemp2)
-            throw new SemanticError("Operação lógica inválida para " + tipoDesemp2.getFormatName() + " e " +
+        if ((tipoDesemp1 != tipoDesemp2) || (tipoDesemp1 == ExpressionType.BOOL || tipoDesemp2 == ExpressionType.BOOL))
+            throw new SemanticError("Operação relacional inválida para " + tipoDesemp2.getFormatName() + " e " +
             tipoDesemp1.getFormatName(), lineCalculator.getLine(token.getPosition()));
             
         pilhaTipos.push(ExpressionType.BOOL);
@@ -400,11 +406,11 @@ public class SemanticContext {
         ocGenerator.carregaString(valorConstante);
     }
 
-    public void handleNegativeExpression(Token token) throws SemanticError{ // #131
+    public void handleInversionExpression(Token token) throws SemanticError{ // #131
         ExpressionType tipoDesemp = pilhaTipos.peek();
 
         if (!verifyValidNumericType(tipoDesemp))
-            throw new SemanticError("Operação de negação inválida para " + tipoDesemp.getFormatName(),
+            throw new SemanticError("Operação de inversão inválida para " + tipoDesemp.getFormatName(),
             lineCalculator.getLine(token.getPosition()));
 
         ocGenerator.carregaFloat("-1.0");
